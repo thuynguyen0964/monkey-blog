@@ -8,6 +8,8 @@ import { Field } from '../Field';
 import { EyeClose, EyeIcon } from '../Icon';
 import { useState } from 'react';
 import { Button } from '../Button';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -30,13 +32,28 @@ const SignUpStyles = styled.div`
   }
 `;
 
+const messLog = {
+  required: 'This field is required',
+  email: 'This field must be email',
+  password: 'At least 8 character',
+};
+
 const SignUp = () => {
   const [showPass, setShowPass] = useState(false);
 
-  const { control, handleSubmit, formState, watch, reset } = useForm();
+  const schema = yup.object({
+    username: yup.string().required(messLog.required),
+    email: yup.string().required(messLog.required).email(messLog.email),
+    password: yup.string().required(messLog.required).max(messLog.password),
+  });
+
+  const { control, handleSubmit, formState, watch, reset } = useForm({
+    resolver: yupResolver(schema),
+  });
   const { errors, isSubmitting, isValid } = formState;
 
   const handleSignUp = (values) => {
+    if (isValid) return;
     console.log('🚀 values:', values);
     toast.success('Create accounts success!!');
     return new Promise((resolve) => {
