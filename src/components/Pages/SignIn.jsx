@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
-import PropTypes from 'prop-types';
 import { useAuthCtx } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,56 +16,52 @@ import {
   messLog,
   toast,
 } from '../import';
-
-const SignInStyles = styled.div`
-  min-height: 100vh;
-  padding: 40px;
-  .logo {
-    width: 80px;
-    height: 100px;
-    object-fit: cover;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .heading {
-    text-align: center;
-    color: ${(props) => props.theme.primary};
-    font-weight: 500;
-    margin: 16px 0px 30px 0px;
-  }
-
-  .form {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-`;
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/config';
+import { FormStyles } from '../../styles/formStyles';
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const { accounts } = useAuthCtx();
-  const { formState, handleSubmit, control } = useForm();
-  const { isSubmitting } = formState;
   const [showPass, setShowPass] = useState(false);
-
   const schema = yup.object({
-    username: yup.string().required(messLog.required),
     email: yup.string().required(messLog.required).email(messLog.email),
     password: yup.string().required(messLog.required).min(8, messLog.password),
   });
 
-  const handleSignIn = (values) => {
-    toast.success('Login successfully!!');
+  const { formState, handleSubmit, control } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const { isSubmitting, errors, isValid } = formState;
+
+  useEffect(() => {
+    const arrErrors = Object.values(errors);
+    if (arrErrors.length > 0) {
+      toast.warn(arrErrors[0]?.message);
+    }
+  }, [errors]);
+
+  // sign in and navigate user to Home Page
+  const handleSignIn = async (values) => {
+    if (!isValid) return;
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      toast.success('Login successfully!!');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  // const navigate = useNavigate();
-  // // useEffect(() => {
-  // //   if (!accounts.email) {
-  // //     navigate('/signup');
-  // //   } else {
-  // //     navigate('/');
-  // //   }
-  // // }, []);
+  // if user was created, then navigate to Home Page
+  useEffect(() => {
+    document.title = 'Login Page';
+    if (accounts?.email) {
+      navigate('/');
+    }
+  }, []);
   return (
-    <SignInStyles>
+    <FormStyles>
       <div className='container'>
         <img className='logo' src={logo} alt='' />
         <h1 className='heading'>Monkey Blogging</h1>
@@ -116,11 +110,11 @@ const SignIn = () => {
             Login
           </Button>
         </form>
+        <p className='isHaveAccount'>
+          Wanna join with us ? <Link to='/signup'>Register an accounts</Link>
+        </p>
       </div>
-    </SignInStyles>
+    </FormStyles>
   );
 };
-
-SignIn.propTypes = {};
-
 export default SignIn;

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase/config';
 import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   EyeClose,
@@ -18,29 +17,7 @@ import {
   messLog,
   toast,
 } from '../import';
-
-const SignUpStyles = styled.div`
-  min-height: 100vh;
-  padding: 40px;
-  .logo {
-    width: 80px;
-    height: 100px;
-    object-fit: cover;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .heading {
-    text-align: center;
-    color: ${(props) => props.theme.primary};
-    font-weight: 500;
-    margin: 16px 0px 30px 0px;
-  }
-
-  .form {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-`;
+import { FormStyles } from '../../styles/formStyles';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -76,6 +53,9 @@ const SignUp = () => {
   };
 
   useEffect(() => {
+    document.title = 'Register Accounts';
+  }, []);
+  useEffect(() => {
     const arrErrors = Object.values(errors);
     if (arrErrors.length > 0) {
       toast.warn(arrErrors[0]?.message);
@@ -83,7 +63,7 @@ const SignUp = () => {
   }, [errors]);
 
   return (
-    <SignUpStyles>
+    <FormStyles>
       <div className='container'>
         <img className='logo' src={logo} alt='' />
         <h1 className='heading'>Monkey Blogging</h1>
@@ -140,8 +120,11 @@ const SignUp = () => {
             Register
           </Button>
         </form>
+        <p className='isHaveAccount'>
+          Do you have an accounts ? <Link to='/signin'>SignIn</Link>
+        </p>
       </div>
-    </SignUpStyles>
+    </FormStyles>
   );
 };
 
