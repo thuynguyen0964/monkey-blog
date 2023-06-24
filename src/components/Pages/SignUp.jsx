@@ -4,7 +4,8 @@ import { Label } from '../label';
 import { Input } from '../input';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { EyeIcon } from '../Icon';
+import { Field } from '../Field';
+import { EyeClose } from '../Icon';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -20,12 +21,7 @@ const SignUpStyles = styled.div`
     font-weight: 600;
     margin: 16px 0px 40px 0px;
   }
-  .field {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
+
   .form {
     max-width: 600px;
     margin: 0 auto;
@@ -51,7 +47,7 @@ const SignUp = () => {
           className='form'
           onSubmit={handleSubmit(handleSignUp)}
         >
-          <div className='field'>
+          <Field>
             <Label htmlFor='username'>UserName</Label>
             <Input
               type='text'
@@ -59,7 +55,25 @@ const SignUp = () => {
               placeholder='Enter your username...'
               control={control}
             ></Input>
-          </div>
+
+            <Label htmlFor='email'>Email Addr</Label>
+            <Input
+              type='email'
+              name='email'
+              placeholder='Enter your email...'
+              control={control}
+            ></Input>
+
+            <Label htmlFor='password'>Password</Label>
+            <Input
+              type='password'
+              name='password'
+              placeholder='Enter your password...'
+              control={control}
+            >
+              <EyeClose className='eye'></EyeClose>
+            </Input>
+          </Field>
         </form>
       </div>
     </SignUpStyles>

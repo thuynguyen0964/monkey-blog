@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useController } from 'react-hook-form';
-import { EyeIcon } from '../Icon';
 
 const InputStyles = styled.div`
   position: relative;
