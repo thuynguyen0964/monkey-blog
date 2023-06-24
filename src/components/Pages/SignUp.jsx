@@ -2,15 +2,19 @@ import styled from 'styled-components';
 import logo from '/src/assets/monkey.svg';
 import { Label } from '../label';
 import { Input } from '../input';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 import { Field } from '../Field';
 import { EyeClose, EyeIcon } from '../Icon';
 import { useState } from 'react';
 import { Button } from '../Button';
+import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from '../../firebase/config';
+import { useNavigate } from 'react-router-dom';
+import { addDoc, collection } from 'firebase/firestore';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -40,6 +44,7 @@ const messLog = {
 };
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
 
   const schema = yup.object({
@@ -53,15 +58,22 @@ const SignUp = () => {
   });
   const { errors, isSubmitting } = formState;
 
-  const handleSignUp = (values) => {
-    console.log('🚀 values:', values);
-    toast.success('Create accounts success!!');
+  const handleSignUp = async (values) => {
+    await createUserWithEmailAndPassword(auth, values.email, values.password);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 2500);
+    await updateProfile(auth.currentUser, {
+      displayName: values.username,
     });
+
+    const userRef = collection(db, 'users');
+    await addDoc(userRef, {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+    });
+
+    toast.success('Create accounts success!!');
+    navigate('/');
   };
 
   useEffect(() => {
