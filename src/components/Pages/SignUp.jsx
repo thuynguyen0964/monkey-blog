@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Button } from '../Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -35,7 +36,7 @@ const SignUpStyles = styled.div`
 const messLog = {
   required: 'This field is required',
   email: 'This field must be email',
-  password: 'At least 8 character',
+  password: 'Password must be at less 8 character',
 };
 
 const SignUp = () => {
@@ -44,24 +45,31 @@ const SignUp = () => {
   const schema = yup.object({
     username: yup.string().required(messLog.required),
     email: yup.string().required(messLog.required).email(messLog.email),
-    password: yup.string().required(messLog.required).max(messLog.password),
+    password: yup.string().required(messLog.required).min(8, messLog.password),
   });
 
   const { control, handleSubmit, formState, watch, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const { errors, isSubmitting, isValid } = formState;
+  const { errors, isSubmitting } = formState;
 
   const handleSignUp = (values) => {
-    if (isValid) return;
     console.log('🚀 values:', values);
     toast.success('Create accounts success!!');
+
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, 2500);
     });
   };
+
+  useEffect(() => {
+    const arrErrors = Object.values(errors);
+    if (arrErrors.length > 0) {
+      toast.warn(arrErrors[0]?.message);
+    }
+  }, [errors]);
 
   return (
     <SignUpStyles>
@@ -85,7 +93,7 @@ const SignUp = () => {
 
             <Label htmlFor='email'>Email Addr</Label>
             <Input
-              type='email'
+              type='text'
               name='email'
               placeholder='Enter your email...'
               control={control}
