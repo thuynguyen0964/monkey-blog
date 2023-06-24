@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import PropTypes from 'prop-types';
+import { useAuthCtx } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth, db } from '../../firebase/config';
-import { addDoc, collection } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   EyeClose,
@@ -19,7 +19,7 @@ import {
   toast,
 } from '../import';
 
-const SignUpStyles = styled.div`
+const SignInStyles = styled.div`
   min-height: 100vh;
   padding: 40px;
   .logo {
@@ -42,8 +42,10 @@ const SignUpStyles = styled.div`
   }
 `;
 
-const SignUp = () => {
-  const navigate = useNavigate();
+const SignIn = () => {
+  const { accounts } = useAuthCtx();
+  const { formState, handleSubmit, control } = useForm();
+  const { isSubmitting } = formState;
   const [showPass, setShowPass] = useState(false);
 
   const schema = yup.object({
@@ -52,38 +54,20 @@ const SignUp = () => {
     password: yup.string().required(messLog.required).min(8, messLog.password),
   });
 
-  const { control, handleSubmit, formState } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const { errors, isSubmitting } = formState;
-
-  const handleSignUp = async (values) => {
-    await createUserWithEmailAndPassword(auth, values.email, values.password);
-
-    await updateProfile(auth.currentUser, {
-      displayName: values.username,
-    });
-
-    const userRef = collection(db, 'users');
-    await addDoc(userRef, {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-    });
-
-    toast.success('Create accounts success!!');
-    navigate('/');
+  const handleSignIn = (values) => {
+    toast.success('Login successfully!!');
   };
 
-  useEffect(() => {
-    const arrErrors = Object.values(errors);
-    if (arrErrors.length > 0) {
-      toast.warn(arrErrors[0]?.message);
-    }
-  }, [errors]);
-
+  // const navigate = useNavigate();
+  // // useEffect(() => {
+  // //   if (!accounts.email) {
+  // //     navigate('/signup');
+  // //   } else {
+  // //     navigate('/');
+  // //   }
+  // // }, []);
   return (
-    <SignUpStyles>
+    <SignInStyles>
       <div className='container'>
         <img className='logo' src={logo} alt='' />
         <h1 className='heading'>Monkey Blogging</h1>
@@ -91,17 +75,9 @@ const SignUp = () => {
         <form
           autoComplete='off'
           className='form'
-          onSubmit={handleSubmit(handleSignUp)}
+          onSubmit={handleSubmit(handleSignIn)}
         >
           <Field>
-            <Label htmlFor='username'>UserName</Label>
-            <Input
-              type='text'
-              name='username'
-              placeholder='Enter your username...'
-              control={control}
-            ></Input>
-
             <Label htmlFor='email'>Email Addr</Label>
             <Input
               type='text'
@@ -137,12 +113,14 @@ const SignUp = () => {
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Register
+            Login
           </Button>
         </form>
       </div>
-    </SignUpStyles>
+    </SignInStyles>
   );
 };
 
-export default SignUp;
+SignIn.propTypes = {};
+
+export default SignIn;

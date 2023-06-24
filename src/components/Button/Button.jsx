@@ -15,6 +15,13 @@ const ButtonStyles = styled.button`
   }
 `;
 
+/**
+ *
+ * @param {string} children Type of children is any
+ * @param {string} type Type of 'type' can 'submit' | 'button','reset'
+ * @returns
+ */
+
 const Button = ({ type, children, isLoading, onClick, ...props }) => {
   return (
     <ButtonStyles type={type} {...props} onClick={onClick}>
@@ -25,7 +32,7 @@ const Button = ({ type, children, isLoading, onClick, ...props }) => {
 
 Button.propTypes = {
   type: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
   style: PropTypes.object,
