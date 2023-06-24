@@ -1,4 +1,3 @@
-import './App.css';
 import Routing from './components/Routers/Routing';
 import Toasty from './components/Notify/Toasty';
 import AuthProvider from './context/AuthContext';
@@ -8,7 +7,7 @@ function App() {
     <AuthProvider>
       <div className='App'>
         <Routing />
-        <Toasty></Toasty>
+        <Toasty />
       </div>
     </AuthProvider>
   );

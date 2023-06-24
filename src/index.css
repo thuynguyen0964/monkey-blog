@@ -18,6 +18,7 @@ picture,
 video,
 canvas,
 svg {
+  display: block;
   max-width: 100%;
 }
 input,
@@ -36,4 +37,10 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
+}
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
