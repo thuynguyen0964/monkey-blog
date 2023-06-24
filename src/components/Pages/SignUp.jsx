@@ -5,7 +5,8 @@ import { Input } from '../input';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Field } from '../Field';
-import { EyeClose } from '../Icon';
+import { EyeClose, EyeIcon } from '../Icon';
+import { useState } from 'react';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -29,6 +30,8 @@ const SignUpStyles = styled.div`
 `;
 
 const SignUp = () => {
+  const [showPass, setShowPass] = useState(false);
+
   const { control, handleSubmit, formState } = useForm();
   const { errors, isSubmitting, isValid } = formState;
 
@@ -66,12 +69,22 @@ const SignUp = () => {
 
             <Label htmlFor='password'>Password</Label>
             <Input
-              type='password'
+              type={showPass ? 'text' : 'password'}
               name='password'
               placeholder='Enter your password...'
               control={control}
             >
-              <EyeClose className='eye'></EyeClose>
+              {showPass ? (
+                <EyeIcon
+                  className='eye'
+                  onClick={() => setShowPass(false)}
+                ></EyeIcon>
+              ) : (
+                <EyeClose
+                  className='eye'
+                  onClick={() => setShowPass(true)}
+                ></EyeClose>
+              )}
             </Input>
           </Field>
         </form>
