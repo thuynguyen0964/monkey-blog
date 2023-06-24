@@ -10,9 +10,8 @@ const Toasty = () => {
       newestOnTop={false}
       closeOnClick
       rtl={false}
-      pauseOnFocusLoss
       draggable
-      theme='light'
+      pauseOnHover={false}
     />
   );
 };

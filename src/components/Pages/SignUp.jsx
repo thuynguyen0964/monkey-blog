@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { Field } from '../Field';
 import { EyeClose, EyeIcon } from '../Icon';
 import { useState } from 'react';
+import { Button } from '../Button';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -32,11 +33,17 @@ const SignUpStyles = styled.div`
 const SignUp = () => {
   const [showPass, setShowPass] = useState(false);
 
-  const { control, handleSubmit, formState } = useForm();
+  const { control, handleSubmit, formState, watch, reset } = useForm();
   const { errors, isSubmitting, isValid } = formState;
 
   const handleSignUp = (values) => {
+    console.log('🚀 values:', values);
     toast.success('Create accounts success!!');
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 2500);
+    });
   };
 
   return (
@@ -87,6 +94,15 @@ const SignUp = () => {
               )}
             </Input>
           </Field>
+
+          <Button
+            type='submit'
+            style={{ width: 200, margin: '0 auto' }}
+            disabled={isSubmitting}
+            isLoading={isSubmitting}
+          >
+            Register
+          </Button>
         </form>
       </div>
     </SignUpStyles>
