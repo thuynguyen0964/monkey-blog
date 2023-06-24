@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import logo from '/src/assets/monkey.svg';
+import { Label } from '../label';
 
 const SignUpStyles = styled.div`
   min-height: 100vh;
@@ -20,11 +21,6 @@ const SignUpStyles = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-  }
-  .label {
-    color: ${(props) => props.theme.grayDark};
-    font-weight: 500;
-    cursor: pointer;
   }
   .input {
     width: 100%;
@@ -54,9 +50,7 @@ const SignUp = () => {
 
         <form autoComplete='off' className='form'>
           <div className='field'>
-            <label htmlFor='username' className='label'>
-              UserName
-            </label>
+            <Label htmlFor='username'>UserName</Label>
             <input
               type='text'
               className='input'
