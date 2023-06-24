@@ -1,16 +1,17 @@
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/config';
-import { Button, toast } from '../import';
+import styled from 'styled-components';
+import Header from '../Layout/Header';
+
+const HomePageStyles = styled.main`
+  max-width: calc(100% - 24px);
+  width: 1180px;
+  margin: 0 auto;
+`;
 
 const Home = () => {
-  const handleSignOut = () => {
-    signOut(auth);
-    toast.success('Sign out successfully');
-  };
   return (
-    <div>
-      <Button onClick={handleSignOut}>Sign Out</Button>
-    </div>
+    <HomePageStyles>
+      <Header></Header>
+    </HomePageStyles>
   );
 };
 
