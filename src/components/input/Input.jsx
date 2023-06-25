@@ -4,8 +4,9 @@ import { useController } from 'react-hook-form';
 
 const InputStyles = styled.div`
   position: relative;
-  input {
-    width: 100%;
+  max-width: 100%;
+  .input {
+    width: 600px;
     padding: ${(props) => (props.hasIcon ? '16px 60px 16px 16px' : '16px')};
     background-color: ${(props) => props.theme.grayLight};
     border-radius: 6px;

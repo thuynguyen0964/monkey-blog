@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+
+html,
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  outline: none;
+  border: none;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+.container {
+  width: 1180px;
+  max-width: calc(100% - 24px);
+  margin: 0 auto;
+}
+
+.btn-link {
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 6px;
+  background-color: #1a56d8;
+}
+.grid-layout {
+  display: grid;
+  grid-auto-columns: 235px;
+  gap: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px;
+  }
+  @media screen and (max-width: 1023.98px) {
+    grid-auto-flow: column;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+  }
+
+  & > * {
+    scroll-snap-align: start;
+  }
+  &--primary {
+    grid-auto-columns: 220px;
+    @media screen and (min-width: 1024px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+.home-block {
+  padding: 40px 0;
+  @media screen and (min-width: 1024px) {
+    padding-bottom: 60px;
+  }
+}

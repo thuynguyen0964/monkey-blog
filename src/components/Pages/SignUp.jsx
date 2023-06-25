@@ -65,7 +65,9 @@ const SignUp = () => {
   return (
     <FormStyles>
       <div className='container'>
-        <img className='logo' src={logo} alt='' />
+        <Link to='/'>
+          <img className='logo' src={logo} alt='' />
+        </Link>
         <h1 className='heading'>Monkey Blogging</h1>
 
         <form

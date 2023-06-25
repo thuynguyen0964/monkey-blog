@@ -58,36 +58,40 @@ const Header = () => {
   const { control } = useForm();
   return (
     <HeaderStyles>
-      <div className='header-main'>
-        <Link to='/'>
-          <img src={logo} alt='Monkey Blogging' className='header-logo' />
-        </Link>
-        <ul className='header-menu'>
-          {ListMenu.length > 0 &&
-            ListMenu.map((menu, index) => (
-              <li className='menu-item' key={index}>
-                <NavLink to={menu.to}>{menu.title}</NavLink>
-              </li>
-            ))}
-        </ul>
+      <div className='container'>
+        <div className='header-main'>
+          <Link to='/'>
+            <img src={logo} alt='Monkey Blogging' className='header-logo' />
+          </Link>
+          <ul className='header-menu'>
+            {ListMenu.length > 0 &&
+              ListMenu.map((menu, index) => (
+                <li className='menu-item' key={index}>
+                  <NavLink to={menu.to}>{menu.title}</NavLink>
+                </li>
+              ))}
+          </ul>
 
-        <div className='header-cta'>
-          <Input
-            style={{ padding: 10 }}
-            placeholder='Search blog, posts...'
-            control={control}
-            name='filterBlog'
-          ></Input>
-          {accounts ? (
-            <div className='header-auth'>
-              <img src={avatar} alt='avatar' className='avatar' />
-              <span className='userId-name'>{accounts?.displayName}</span>
-            </div>
-          ) : (
-            <Button to='/signup' style={{ width: 150 }}>
-              SignUp
-            </Button>
-          )}
+          <div className='header-cta'>
+            <Input
+              style={{ padding: 10, width: 'auto' }}
+              placeholder='Search blog, posts...'
+              control={control}
+              name='filterBlog'
+            ></Input>
+            {accounts ? (
+              <div className='header-auth'>
+                <img src={avatar} alt='avatar' className='avatar' />
+                <span className='userId-name'>
+                  {accounts?.displayName || 'User'}
+                </span>
+              </div>
+            ) : (
+              <Button to='/signup' style={{ width: 150 }}>
+                SignUp
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </HeaderStyles>

@@ -1,17 +1,22 @@
-import styled from 'styled-components';
-import Header from '../Layout/Header';
-
-const HomePageStyles = styled.main`
-  max-width: calc(100% - 24px);
-  width: 1180px;
-  margin: 0 auto;
-`;
+import Banner from '../../module/Home/Banner';
+import HomeFeature from '../../module/Home/HomeFeature';
+import HomeNewest from '../../module/Home/HomeNewest';
+import Layout from '../Layout/Layout';
+import { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => {
+    document.title = 'Home';
+  }, []);
+
   return (
-    <HomePageStyles>
-      <Header></Header>
-    </HomePageStyles>
+    <main className='main'>
+      <Layout>
+        <Banner></Banner>
+        <HomeFeature></HomeFeature>
+        <HomeNewest></HomeNewest>
+      </Layout>
+    </main>
   );
 };
 

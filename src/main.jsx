@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+import './index.scss';
 import App from './App.jsx';
 import ReactDOM from 'react-dom/client';
 import { theme } from './utils/constant.js';
