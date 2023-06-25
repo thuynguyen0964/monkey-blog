@@ -12,7 +12,14 @@ const ListMenu = [
 ];
 
 const HeaderStyles = styled.header`
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
   padding: 10px 0;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   .header-main,
   .header-menu,
   .header-cta,

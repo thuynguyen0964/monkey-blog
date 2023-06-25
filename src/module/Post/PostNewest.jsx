@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PostCategory from './PostCategory';
 const PostNewestItemStyles = styled.div`
   display: flex;
   align-items: center;
@@ -23,16 +24,6 @@ const PostNewestItemStyles = styled.div`
         object-fit: cover;
         border-radius: 12px;
       }
-    }
-    &-category {
-      display: inline-block;
-      padding: 8px;
-      border-radius: 8px;
-      color: #6b6b6b;
-      font-size: 12px;
-      font-weight: 600;
-      background-color: white;
-      margin-bottom: 8px;
     }
     &-info {
       display: flex;
@@ -69,7 +60,9 @@ const PostNewest = () => {
         />
       </div>
       <div className='post-content'>
-        <span className='post-category'>Kiến thức</span>
+        <PostCategory type='secondary' className='mb'>
+          Kiến Thức
+        </PostCategory>
         <h3 className='post-title'>
           Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
         </h3>

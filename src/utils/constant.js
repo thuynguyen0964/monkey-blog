@@ -5,4 +5,6 @@ export const theme = {
   blue: 'blueviolet',
   tertiary: '#3A1097',
   accent: '#00D1ED',
+  grayF3: '#F3EDFF',
+  gray6B: '#6B6B6B',
 };

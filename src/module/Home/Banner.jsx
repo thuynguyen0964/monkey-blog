@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { Button } from '../../components/Button';
 
 const HomeBanerStyles = styled.div`
-  height: 520px;
+  height: calc(100vh - 85px);
   background-image: linear-gradient(to right bottom, #00b4aa, #a4d96c);
-  margin-top: 44px;
+  margin-top: 85px;
   .banner {
     display: flex;
     justify-content: space-between;

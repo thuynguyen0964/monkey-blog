@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PostCategory from './PostCategory';
 const PostFeatureItemStyles = styled.div`
   width: 100%;
   border-radius: 16px;
@@ -27,7 +28,7 @@ const PostFeatureItemStyles = styled.div`
     &-content {
       position: absolute;
       inset: 0;
-      z-index: 10;
+      z-index: 5;
       padding: 20px;
       color: white;
     }
@@ -36,19 +37,6 @@ const PostFeatureItemStyles = styled.div`
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
-    }
-    &-category {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: #6b6b6b;
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-      background-color: #f3f3f3;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100px;
     }
     &-info {
       display: flex;
@@ -89,7 +77,7 @@ const PostFeature = () => {
       <div className='post-overlay'></div>
       <div className='post-content'>
         <div className='post-top'>
-          <span className='post-category'>Kiến thức</span>
+          <PostCategory>Kiến Thức</PostCategory>
           <div className='post-info'>
             <span className='post-time'>Mar 23</span>
             <span className='post-dot'></span>

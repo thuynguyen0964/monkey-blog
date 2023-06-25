@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 *,
 *::before,
 *::after {
@@ -10,7 +10,7 @@
 
 html,
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 img,
@@ -87,4 +87,7 @@ h6 {
   @media screen and (min-width: 1024px) {
     padding-bottom: 60px;
   }
+}
+.mb {
+  margin-bottom: 10px;
 }
