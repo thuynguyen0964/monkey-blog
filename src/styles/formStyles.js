@@ -24,8 +24,9 @@ export const FormStyles = styled.div`
   .isHaveAccount {
     text-align: center;
     margin: 20px 0 0 0;
-  }
-  a {
-    font-weight: 500;
+    a {
+      color: blueviolet;
+      text-decoration: underline;
+    }
   }
 `;

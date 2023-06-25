@@ -7,8 +7,8 @@ import avatar from '/src/assets/doraemon.jpg';
 
 const ListMenu = [
   { title: 'Home', to: '/' },
-  { title: 'Blog', to: 'blog' },
-  { title: 'About', to: 'about' },
+  { title: 'Blog', to: '/blog' },
+  { title: 'Dashboard', to: '/dashboard' },
 ];
 
 const HeaderStyles = styled.header`
@@ -44,10 +44,6 @@ const HeaderStyles = styled.header`
   }
   .header-logo {
     max-width: 50px;
-  }
-  .active {
-    background-color: #2cccff;
-    border-radius: 6px;
   }
   .header-auth {
     gap: 10px;

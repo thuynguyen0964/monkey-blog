@@ -19,9 +19,9 @@ const Routing = () => {
       <Route path='/details/:id' element={<PostDetails />}></Route>
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>
+        <Route path='/manage/post' element={<PostManage />}></Route>
+        <Route path='/manage/add' element={<PostAddNew />}></Route>
       </Route>
-      <Route path='/manage/post' element={<PostManage />}></Route>
-      <Route path='/manage/add' element={<PostAddNew />}></Route>
     </Routes>
   );
 };

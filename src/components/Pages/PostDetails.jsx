@@ -5,6 +5,7 @@ import PostCategory from '../../module/Post/components/PostCategory';
 import PostMeta from '../../module/Post/components/PostMeta';
 import Heading from '../Layout/Heading';
 import PostItem from '../../module/Post/PostItem';
+import { useEffect } from 'react';
 
 const PostDetailsPageStyles = styled.div`
   padding-bottom: 100px;
@@ -93,6 +94,9 @@ const PostDetailsPageStyles = styled.div`
 `;
 
 const PostDetails = () => {
+  useEffect(() => {
+    document.title = 'Details Page';
+  }, []);
   return (
     <PostDetailsPageStyles>
       <Layout>

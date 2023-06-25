@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { logo } from '../../components/import';
 
@@ -28,11 +28,6 @@ const SidebarStyles = styled.div`
     color: ${(props) => props.theme.gray80};
     margin-bottom: 20px;
     cursor: pointer;
-    &.active,
-    &:hover {
-      background: #f1fbf7;
-      color: ${(props) => props.theme.primary};
-    }
   }
 `;
 const sidebarLinks = [
@@ -142,7 +137,9 @@ const Sidebar = () => {
   return (
     <SidebarStyles className='sidebar'>
       <div className='sidebar-logo'>
-        <img src={logo} alt='' />
+        <Link to='/'>
+          <img src={logo} alt='' />
+        </Link>
         <span>Monkey Blogging</span>
       </div>
       {sidebarLinks.map((link) => (

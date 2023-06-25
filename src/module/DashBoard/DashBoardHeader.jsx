@@ -24,8 +24,8 @@ const DashboardHeaderStyles = styled.div`
 const DashboardHeader = () => {
   return (
     <DashboardHeaderStyles>
-      <Button to='/dashboard' className='header-button' height='52px'>
-        Write new post
+      <Button to='/manage/add' className='leading-8'>
+        Write Post
       </Button>
       <div className='header-avatar'>
         <img src={avatar} alt='' />

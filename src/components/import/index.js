@@ -7,6 +7,8 @@ import logo from '/src/assets/monkey.svg';
 import { messLog } from '../../errors/message';
 import { toast } from 'react-toastify';
 import ShowPass from '../input/ShowPass';
+import Checkbox from '../Checkbox/Checkbox';
+import Radio from '../Checkbox/Radio';
 
 export {
   Button,
@@ -19,4 +21,6 @@ export {
   messLog,
   toast,
   ShowPass,
+  Checkbox,
+  Radio,
 };

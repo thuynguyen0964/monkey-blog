@@ -34,7 +34,7 @@ const Button = ({
 }) => {
   if (to && typeof to === 'string') {
     return (
-      <Link to={to} {...props} className='btn-link'>
+      <Link to={to} {...props} className={`btn-link ${className}`}>
         {children}
       </Link>
     );

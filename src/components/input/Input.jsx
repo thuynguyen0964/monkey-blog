@@ -22,8 +22,15 @@ const InputStyles = styled.div`
   }
 `;
 
-// eslint-disable-next-line react/prop-types
-const Input = ({ name, placeholder, control, children, ...props }) => {
+const Input = ({
+  name,
+  placeholder,
+  // eslint-disable-next-line react/prop-types
+  control,
+  children,
+  className,
+  ...props
+}) => {
   const { field } = useController({
     control,
     name,
@@ -33,7 +40,7 @@ const Input = ({ name, placeholder, control, children, ...props }) => {
   return (
     <InputStyles hasIcon={children ? true : false}>
       <input
-        className='input'
+        className={`input ${className}`}
         id={name}
         placeholder={placeholder}
         {...field}
@@ -49,6 +56,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   hasIcon: PropTypes.bool,
   children: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default Input;
