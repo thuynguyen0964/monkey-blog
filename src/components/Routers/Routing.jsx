@@ -6,6 +6,7 @@ import NotFound from '../Pages/NotFound';
 import PostDetails from '../Pages/PostDetails';
 import DashboardLayout from '../../module/DashBoard/DashBoardLayout';
 import Dashboard from '../Pages/DashBoard';
+import PostManage from '../../module/Post/PostManage';
 
 const Routing = () => {
   return (
@@ -18,6 +19,7 @@ const Routing = () => {
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>
       </Route>
+      <Route path='/manage/post' element={<PostManage></PostManage>}></Route>
     </Routes>
   );
 };
