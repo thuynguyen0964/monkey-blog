@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ButtonStyles = styled.button`
@@ -22,7 +23,15 @@ const ButtonStyles = styled.button`
  * @returns
  */
 
-const Button = ({ type, children, isLoading, onClick, ...props }) => {
+const Button = ({ type, children, isLoading, to, onClick, ...props }) => {
+  if (to && typeof to === 'string') {
+    return (
+      <Link to={to} {...props} className='btn-link'>
+        {children}
+      </Link>
+    );
+  }
+
   return (
     <ButtonStyles type={type} {...props} onClick={onClick}>
       {isLoading ? 'Loading...' : children}
@@ -36,6 +45,7 @@ Button.propTypes = {
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
   style: PropTypes.object,
+  to: PropTypes.string,
 };
 
 export default Button;

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Button } from '../Button';
-import { useNavigate } from 'react-router-dom';
 
 const NotFoundStyles = styled.div`
   position: relative;
@@ -18,12 +17,11 @@ const NotFoundStyles = styled.div`
 `;
 
 const NotFound = () => {
-  const navigate = useNavigate();
   return (
     <NotFoundStyles>
       <img src='/404-not-watermark.png' alt='' className='img-err' />
       <div className='child'>
-        <Button onClick={() => navigate('/')}>Home</Button>
+        <Button to='/'>Home</Button>
       </div>
     </NotFoundStyles>
   );

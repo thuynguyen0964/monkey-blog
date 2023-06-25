@@ -1,7 +1,9 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, logo } from '../import';
 import { useForm } from 'react-hook-form';
+import { useAuthCtx } from '../../context/AuthContext';
+import avatar from '/src/assets/doraemon.jpg';
 
 const ListMenu = [
   { title: 'Home', to: '/' },
@@ -13,7 +15,8 @@ const HeaderStyles = styled.header`
   padding: 10px 0;
   .header-main,
   .header-menu,
-  .header-cta {
+  .header-cta,
+  .header-auth {
     display: flex;
     align-items: center;
   }
@@ -39,10 +42,19 @@ const HeaderStyles = styled.header`
     background-color: #2cccff;
     border-radius: 6px;
   }
+  .header-auth {
+    gap: 10px;
+  }
+  .avatar {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 const Header = () => {
-  const navigate = useNavigate();
-  const changePage = () => navigate('/signup');
+  const { accounts } = useAuthCtx();
+
   const { control } = useForm();
   return (
     <HeaderStyles>
@@ -66,9 +78,16 @@ const Header = () => {
             control={control}
             name='filterBlog'
           ></Input>
-          <Button onClick={changePage} style={{ width: 150 }}>
-            SignUp
-          </Button>
+          {accounts ? (
+            <div className='header-auth'>
+              <img src={avatar} alt='avatar' className='avatar' />
+              <span className='userId-name'>{accounts?.displayName}</span>
+            </div>
+          ) : (
+            <Button to='/signup' style={{ width: 150 }}>
+              SignUp
+            </Button>
+          )}
         </div>
       </div>
     </HeaderStyles>
