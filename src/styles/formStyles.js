@@ -13,8 +13,9 @@ export const FormStyles = styled.div`
   .heading {
     text-align: center;
     color: ${(props) => props.theme.primary};
-    font-weight: 500;
-    margin: 16px 0px 30px 0px;
+    font-weight: 600;
+    margin: 12px 0px 30px 0px;
+    font-size: 24px;
   }
 
   .form {

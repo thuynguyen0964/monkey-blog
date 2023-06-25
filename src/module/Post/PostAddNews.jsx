@@ -2,6 +2,16 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Button, Field, Input, Label, Radio } from '../../components/import';
 import { Dropdown } from '../../components/Dropdown';
+import { v4 as uuidv4 } from 'uuid';
+
+const options = [
+  'Knowledge',
+  'Blockchain',
+  'Setup',
+  'Nature',
+  'Developer',
+  'Tester',
+];
 const PostAddNewStyles = styled.div``;
 
 const PostAddNew = () => {
@@ -88,11 +98,10 @@ const PostAddNew = () => {
           <Field>
             <Label>Category</Label>
             <Dropdown>
-              <Dropdown.Option>Knowledge</Dropdown.Option>
-              <Dropdown.Option>Blockchain</Dropdown.Option>
-              <Dropdown.Option>Setup</Dropdown.Option>
-              <Dropdown.Option>Nature</Dropdown.Option>
-              <Dropdown.Option>Developer</Dropdown.Option>
+              {options.length > 0 &&
+                options.map((option) => (
+                  <Dropdown.Option key={uuidv4()}>{option}</Dropdown.Option>
+                ))}
             </Dropdown>
           </Field>
           <Field></Field>
