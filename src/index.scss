@@ -55,9 +55,8 @@ h6 {
 }
 .grid-layout {
   display: grid;
-  grid-auto-columns: 235px;
-  gap: 20px;
-  -ms-overflow-style: none;
+  grid-auto-columns: 240px;
+  gap: 16px;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
@@ -94,4 +93,10 @@ h6 {
 .link {
   text-decoration: none;
   color: inherit;
+}
+.post-image {
+  display: block;
+  flex-shrink: 0;
+  width: 180px;
+  height: 130px;
 }

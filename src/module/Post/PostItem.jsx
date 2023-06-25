@@ -2,36 +2,28 @@ import styled from 'styled-components';
 import PostCategory from './components/PostCategory';
 import PostTitle from './components/PostTitle';
 import PostMeta from './components/PostMeta';
+import PostImage from './components/PostImage';
 
 const PostItemStyles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  .post {
-    &-image {
-      height: 202px;
-      margin-bottom: 20px;
-      display: block;
-      width: 100%;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 16px;
-      }
-    }
+  .post-image {
+    height: 202px;
+    margin-bottom: 20px;
+    width: 100%;
   }
 `;
 
 const PostItem = () => {
   return (
     <PostItemStyles>
-      <div className='post-image'>
-        <img
-          src='https://images.unsplash.com/photo-1570993492881-25240ce854f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2290&q=80'
-          alt=''
-        />
-      </div>
+      <PostImage
+        to='/details/id'
+        url='https://images.unsplash.com/photo-1570993492881-25240ce854f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2290&q=80'
+        alt='setup'
+        className='post-image'
+      ></PostImage>
       <PostCategory type='primary' className='mb'>
         Kiến thức
       </PostCategory>
