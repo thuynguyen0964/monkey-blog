@@ -1,17 +1,24 @@
+import { Link } from 'react-router-dom';
 import Pagination from '../../components/Paginate/Pagination';
 import Table from '../../components/Table/Table';
+import { logo } from '../../components/import';
 
 const PostManage = () => {
   return (
-    <div>
-      <h1 className='dashboard-heading'>Manage post</h1>
-      <div className='mb-10 flex justify-end'>
-        <div className='w-full max-w-[300px]'>
-          <input
-            type='text'
-            className='w-full p-4 rounded-lg border border-solid border-gray-300'
-            placeholder='Search post...'
-          />
+    <>
+      <div className='container nopadding'>
+        <div className='py-5 flex justify-between items-center'>
+          <Link to='/'>
+            <img src={logo} alt='' className='max-w-[50px]' />
+          </Link>
+          <h2 className='text-2xl font-semibold'>Post Manager</h2>
+          <div className='w-full mr-5 max-w-[300px]'>
+            <input
+              type='text'
+              className='w-full p-3 rounded-lg border border-solid border-gray-300 bg-slate-100 focus:bg-white'
+              placeholder='Search post...'
+            />
+          </div>
         </div>
       </div>
       <Table>
@@ -51,6 +58,7 @@ const PostManage = () => {
               <span className='text-gray-500'>Evondev</span>
             </td>
             <td>
+              {/* Icon action */}
               <div className='flex items-center gap-x-3 text-gray-500'>
                 <span className='flex items-center justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer'>
                   <svg
@@ -113,7 +121,7 @@ const PostManage = () => {
       <div className='mt-10'>
         <Pagination></Pagination>
       </div>
-    </div>
+    </>
   );
 };
 
