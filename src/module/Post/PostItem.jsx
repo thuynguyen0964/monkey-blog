@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import PostTitle from './PostTitle';
-import PostCategory from './PostCategory';
+import PostCategory from './components/PostCategory';
+import PostTitle from './components/PostTitle';
+import PostMeta from './components/PostMeta';
 
 const PostItemStyles = styled.div`
   display: flex;
@@ -18,22 +19,6 @@ const PostItemStyles = styled.div`
         object-fit: cover;
         border-radius: 16px;
       }
-    }
-    &-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #6b6b6b;
-      margin-top: auto;
-    }
-    &-dot {
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      background-color: currentColor;
-      border-radius: 100rem;
     }
   }
 `;
@@ -53,11 +38,7 @@ const PostItem = () => {
       <PostTitle size='large' className='mb'>
         Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
       </PostTitle>
-      <div className='post-info'>
-        <span className='post-time'>Mar 23</span>
-        <span className='post-dot'></span>
-        <span className='post-author'>Andiez Le</span>
-      </div>
+      <PostMeta color='primary' author='Thuy Nguyen' date='June 25'></PostMeta>
     </PostItemStyles>
   );
 };

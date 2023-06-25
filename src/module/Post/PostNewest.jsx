@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import PostCategory from './PostCategory';
-import PostTitle from './PostTitle';
+import PostCategory from './components/PostCategory';
+import PostTitle from './components/PostTitle';
+import PostMeta from './components/PostMeta';
 const PostNewestItemStyles = styled.div`
   display: flex;
   align-items: center;
@@ -26,22 +27,6 @@ const PostNewestItemStyles = styled.div`
         border-radius: 12px;
       }
     }
-    &-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      margin-left: auto;
-      color: #6b6b6b;
-    }
-    &-dot {
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      background-color: currentColor;
-      border-radius: 100rem;
-    }
   }
 `;
 const PostNewest = () => {
@@ -60,11 +45,11 @@ const PostNewest = () => {
         <PostTitle size='normal' className='mb'>
           Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
         </PostTitle>
-        <div className='post-info'>
-          <span className='post-time'>Mar 23</span>
-          <span className='post-dot'></span>
-          <span className='post-author'>Andiez Le</span>
-        </div>
+        <PostMeta
+          author='Thuy Nguyen'
+          date='June 25'
+          color='secondary'
+        ></PostMeta>
       </div>
     </PostNewestItemStyles>
   );

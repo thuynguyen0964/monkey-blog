@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import PostCategory from './PostCategory';
-import PostTitle from './PostTitle';
+import PostCategory from './components/PostCategory';
+import PostTitle from './components/PostTitle';
+import PostMeta from './components/PostMeta';
 const PostNewestLargeStyles = styled.div`
   .post {
     &-image {
@@ -54,11 +55,7 @@ const PostNewestLarge = () => {
       <PostTitle size='large' className='mb'>
         Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
       </PostTitle>
-      <div className='post-info'>
-        <span className='post-time'>Mar 23</span>
-        <span className='post-dot'></span>
-        <span className='post-author'>Andiez Le</span>
-      </div>
+      <PostMeta author='Thuy Nguyen' date='June 25' color='primary'></PostMeta>
     </PostNewestLargeStyles>
   );
 };
