@@ -1,20 +1,19 @@
 /* eslint-disable no-unused-vars */
 import { useAuthCtx } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
-  EyeClose,
-  EyeIcon,
   Label,
   Input,
   Field,
   logo,
   messLog,
   toast,
+  ShowPass,
 } from '../import';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
@@ -23,7 +22,6 @@ import { FormStyles } from '../../styles/formStyles';
 const SignIn = () => {
   const navigate = useNavigate();
   const { accounts } = useAuthCtx();
-  const [showPass, setShowPass] = useState(false);
   const schema = yup.object({
     email: yup.string().required(messLog.required).email(messLog.email),
     password: yup.string().required(messLog.required).min(8, messLog.password),
@@ -81,24 +79,7 @@ const SignIn = () => {
             ></Input>
 
             <Label htmlFor='password'>Password</Label>
-            <Input
-              type={showPass ? 'text' : 'password'}
-              name='password'
-              placeholder='Enter your password...'
-              control={control}
-            >
-              {showPass ? (
-                <EyeIcon
-                  className='eye'
-                  onClick={() => setShowPass(false)}
-                ></EyeIcon>
-              ) : (
-                <EyeClose
-                  className='eye'
-                  onClick={() => setShowPass(true)}
-                ></EyeClose>
-              )}
-            </Input>
+            <ShowPass control={control}></ShowPass>
           </Field>
 
           <Button

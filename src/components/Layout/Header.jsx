@@ -58,6 +58,17 @@ const HeaderStyles = styled.header`
     object-fit: cover;
     border-radius: 50%;
   }
+
+  @media screen and (max-width: 1023.98px) {
+    .logo {
+      max-width: 30px;
+    }
+    .header-menu,
+    .header-auth,
+    .header-btn {
+      display: none;
+    }
+  }
 `;
 const Header = () => {
   const { accounts } = useAuthCtx();
@@ -94,7 +105,11 @@ const Header = () => {
                 </span>
               </div>
             ) : (
-              <Button to='/signup' style={{ width: 150 }}>
+              <Button
+                className='header-btn'
+                to='/signup'
+                style={{ width: 150 }}
+              >
                 SignUp
               </Button>
             )}

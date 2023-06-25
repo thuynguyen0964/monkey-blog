@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,21 +8,18 @@ import { addDoc, collection } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
-  EyeClose,
-  EyeIcon,
   Label,
   Input,
   Field,
   logo,
   messLog,
   toast,
+  ShowPass,
 } from '../import';
 import { FormStyles } from '../../styles/formStyles';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [showPass, setShowPass] = useState(false);
-
   const schema = yup.object({
     username: yup.string().required(messLog.required),
     email: yup.string().required(messLog.required).email(messLog.email),
@@ -93,24 +90,7 @@ const SignUp = () => {
             ></Input>
 
             <Label htmlFor='password'>Password</Label>
-            <Input
-              type={showPass ? 'text' : 'password'}
-              name='password'
-              placeholder='Enter your password...'
-              control={control}
-            >
-              {showPass ? (
-                <EyeIcon
-                  className='eye'
-                  onClick={() => setShowPass(false)}
-                ></EyeIcon>
-              ) : (
-                <EyeClose
-                  className='eye'
-                  onClick={() => setShowPass(true)}
-                ></EyeClose>
-              )}
-            </Input>
+            <ShowPass control={control}></ShowPass>
           </Field>
 
           <Button

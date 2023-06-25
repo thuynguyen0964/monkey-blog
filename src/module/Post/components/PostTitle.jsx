@@ -10,12 +10,18 @@ const PostTitleaStyles = styled.h3`
     props.size === 'normal' &&
     css`
       font-size: 16px;
+      @media screen and (max-width: 1023.98px) {
+        font-size: 14px;
+      }
     `};
 
   ${(props) =>
     props.size === 'large' &&
     css`
       font-size: 20px;
+      @media screen and (max-width: 1023.98px) {
+        font-size: 16px;
+      }
     `};
 `;
 

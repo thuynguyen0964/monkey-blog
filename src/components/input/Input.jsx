@@ -12,10 +12,6 @@ const InputStyles = styled.div`
     border-radius: 6px;
     font-size: 17px;
     border: 2px solid transparent;
-    :focus {
-      background-color: #fff;
-      border-color: #2cccff;
-    }
   }
   .eye {
     position: absolute;

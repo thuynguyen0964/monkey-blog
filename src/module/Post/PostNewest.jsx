@@ -15,6 +15,19 @@ const PostNewestItemStyles = styled.div`
     margin-bottom: 0;
     border-bottom: 0;
   }
+  &-content {
+    flex: 1;
+  }
+  @media screen and (max-width: 1023.98px) {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    .post {
+      &-image {
+        width: 140px;
+        height: 100px;
+      }
+    }
+  }
 `;
 const PostNewest = () => {
   return (

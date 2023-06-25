@@ -32,6 +32,10 @@ const PostMetaStyles = styled.div`
       color: ${(props) => props.theme.gray6B};
       margin-left: 0;
     `};
+  @media screen and (max-width: 1023.98px) {
+    font-size: 10px;
+    gap: 6px;
+  }
 `;
 
 const PostMeta = ({ date, author, color, className }) => {

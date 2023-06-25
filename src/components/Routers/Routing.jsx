@@ -3,6 +3,7 @@ import Home from '../Pages/Home';
 import SignUp from '../Pages/SignUp';
 import SignIn from '../Pages/SignIn';
 import NotFound from '../Pages/NotFound';
+import PostDetails from '../Pages/PostDetails';
 
 const Routing = () => {
   return (
@@ -11,6 +12,7 @@ const Routing = () => {
       <Route path='signup' element={<SignUp />}></Route>
       <Route path='signin' element={<SignIn />}></Route>
       <Route path='*' element={<NotFound />}></Route>
+      <Route path='/details/:id' element={<PostDetails />}></Route>
     </Routes>
   );
 };

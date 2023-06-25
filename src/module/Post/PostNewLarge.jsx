@@ -10,6 +10,11 @@ const PostNewestLargeStyles = styled.div`
       height: 433px;
       width: auto;
     }
+    @media screen and (max-width: 1023.98px) {
+      &-image {
+        height: 250px;
+      }
+    }
   }
 `;
 

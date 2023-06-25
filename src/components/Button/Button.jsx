@@ -23,7 +23,15 @@ const ButtonStyles = styled.button`
  * @returns
  */
 
-const Button = ({ type, children, isLoading, to, onClick, ...props }) => {
+const Button = ({
+  type,
+  children,
+  isLoading,
+  to,
+  onClick,
+  className,
+  ...props
+}) => {
   if (to && typeof to === 'string') {
     return (
       <Link to={to} {...props} className='btn-link'>
@@ -33,7 +41,12 @@ const Button = ({ type, children, isLoading, to, onClick, ...props }) => {
   }
 
   return (
-    <ButtonStyles type={type} {...props} onClick={onClick}>
+    <ButtonStyles
+      type={type}
+      {...props}
+      onClick={onClick}
+      className={className}
+    >
       {isLoading ? 'Loading...' : children}
     </ButtonStyles>
   );
@@ -46,6 +59,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   style: PropTypes.object,
   to: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default Button;

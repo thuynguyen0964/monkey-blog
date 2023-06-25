@@ -29,6 +29,28 @@ const HomeBanerStyles = styled.div`
     width: 421px;
     margin-bottom: 40px;
   }
+  @media screen and (max-width: 1023.98px) {
+    .banner {
+      flex-direction: column;
+      min-height: unset;
+      &-heading {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+      &-desc {
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      &-image {
+        margin-top: 25px;
+      }
+      &-button {
+        font-size: 14px;
+        height: auto;
+        padding: 15px;
+      }
+    }
+  }
 `;
 const Banner = () => {
   return (
@@ -44,6 +66,7 @@ const Banner = () => {
               nisi.
             </p>
             <Button
+              className='banner-button'
               to='/signup'
               style={{ width: 230, backgroundColor: '#fff', color: '#23BB86' }}
             >
