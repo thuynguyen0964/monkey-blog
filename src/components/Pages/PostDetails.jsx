@@ -166,7 +166,7 @@ const PostDetails = () => {
                     src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80'
                     alt=''
                   />
-                  <figcaption>
+                  <figcaption className='text-center italic my-3 text-slate-400'>
                     Gastronomy atmosphere set aside. Slice butternut cooking
                     home.
                   </figcaption>

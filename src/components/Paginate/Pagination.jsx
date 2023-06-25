@@ -21,7 +21,7 @@ const PaginationStyles = styled.div`
       justify-content: center;
       align-items: center;
       font-weight: 500;
-      &:hover {
+      &:hover:not(.more) {
         color: white;
         background-color: ${(props) => props.theme.primary};
       }
@@ -53,9 +53,9 @@ const Pagination = () => {
         </svg>
       </span>
       <ul className='pagination-list'>
-        <li className='pagination-item'>1</li>
-        <li className='pagination-item is-current'>2</li>
-        <li className='pagination-item'>...</li>
+        <li className='pagination-item is-current'>1</li>
+        <li className='pagination-item'>2</li>
+        <li className='pagination-item more'>...</li>
         <li className='pagination-item'>3</li>
         <li className='pagination-item'>4</li>
         <li className='pagination-item'>5</li>
