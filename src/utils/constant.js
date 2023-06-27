@@ -10,3 +10,14 @@ export const theme = {
   text: '#232323',
   gray80: '#808191',
 };
+
+export const postStatus = {
+  APPROVED: 'approved',
+  PENDING: 'pending',
+  REJECT: 'reject',
+};
+
+/** @type {any} */
+export const metadata = {
+  contentType: 'image/jpeg',
+};

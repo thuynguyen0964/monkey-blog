@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom';
 import Pagination from '../../components/Paginate/Pagination';
 import Table from '../../components/Table/Table';
-import { logo } from '../../components/import';
+import { useEffect } from 'react';
 
 const PostManage = () => {
+  useEffect(() => {
+    document.title = 'Manage Post';
+  }, []);
   return (
     <>
       <div className='container nopadding'>
         <div className='py-5 flex justify-between items-center'>
-          <Link to='/'>
-            <img src={logo} alt='' className='max-w-[50px]' />
-          </Link>
           <h2 className='text-2xl font-semibold'>Post Manager</h2>
           <div className='w-full mr-5 max-w-[300px]'>
             <input
