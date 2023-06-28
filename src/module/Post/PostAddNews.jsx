@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -14,6 +15,7 @@ import slugify from 'slugify';
 import { postStatus } from '../../utils/constant';
 import ImagesUpload from '../../components/upload/ImagesUpload';
 import { useImages } from '../../hooks/useImages';
+import Toggle from '../../components/toogle/Toggle';
 
 const options = ['Knowledge', 'Nature', 'Developer', 'Tester'];
 
@@ -28,17 +30,20 @@ const PostAddNew = () => {
       slug: '',
       status: postStatus.PENDING,
       category: '',
+      hot: false,
     },
   });
 
   const watchStatus = watch('status');
-  // eslint-disable-next-line no-unused-vars
   const watchCategory = watch('category');
+  const watchHot = watch('hot', false);
 
   const addPost = async (values) => {
     const newValues = { ...values };
     newValues.slug = slugify(values.slug || values.title);
     newValues.status = values.status;
+
+    console.log('🚀 ~ newValues:', newValues);
     toast.success('Add post sucessfully');
   };
 
@@ -134,6 +139,13 @@ const PostAddNew = () => {
               image={imageUpload.imagePath}
               handleDeleteImg={handleDeleteImg}
             ></ImagesUpload>
+          </Field>
+          <Field>
+            <Label>Post Feature</Label>
+            <Toggle
+              on={watchHot === true}
+              onClick={() => setValue('hot', !watchHot)}
+            />
           </Field>
         </div>
         <Button type='submit' className='mx-auto'>
