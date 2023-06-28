@@ -1,13 +1,4 @@
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  deleteObject,
-} from 'firebase/storage';
-
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 import {
   Button,
   Field,
@@ -18,20 +9,15 @@ import {
 } from '../../components/import';
 import { Dropdown } from '../../components/Dropdown';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import slugify from 'slugify';
-import { metadata, postStatus } from '../../utils/constant';
+import { postStatus } from '../../utils/constant';
 import ImagesUpload from '../../components/upload/ImagesUpload';
+import { useImages } from '../../hooks/useImages';
 
 const options = ['Knowledge', 'Nature', 'Developer', 'Tester'];
-const PostAddNewStyles = styled.div``;
 
 const PostAddNew = () => {
-  const [imageData, setImageData] = useState({
-    imagePath: '',
-    progressBar: 0,
-  });
-
   useEffect(() => {
     document.title = 'New Post';
   }, []);
@@ -40,7 +26,7 @@ const PostAddNew = () => {
     defaultValues: {
       title: '',
       slug: '',
-      status: 'pending',
+      status: postStatus.PENDING,
       category: '',
     },
   });
@@ -48,7 +34,6 @@ const PostAddNew = () => {
   const watchStatus = watch('status');
   // eslint-disable-next-line no-unused-vars
   const watchCategory = watch('category');
-  const storage = getStorage();
 
   const addPost = async (values) => {
     const newValues = { ...values };
@@ -57,61 +42,13 @@ const PostAddNew = () => {
     toast.success('Add post sucessfully');
   };
 
-  const handleUploadImages = (image) => {
-    const storageRef = ref(storage, 'images/' + image.name);
-    const uploadTask = uploadBytesResumable(storageRef, image, metadata);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImageData({ ...imageData, progressBar: progress });
-        switch (snapshot.state) {
-          case 'paused':
-            break;
-          case 'running':
-            break;
-        }
-      },
-      () => {
-        toast.error('Something is broken');
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageData({ ...imageData, imagePath: downloadURL });
-        });
-      }
-    );
-  };
-
-  const onSelectImages = (e) => {
-    const image = e.target.files[0];
-    if (!image) {
-      toast.warn('Please select a file');
-      return;
-    }
-    handleUploadImages(image);
-    setValue('images', image.name);
-  };
-
-  const handleDeleteImg = () => {
-    // Create a reference to the file to delete
-    const imageRef = ref(storage, `images/${getValues('images')}`);
-
-    // Delete the file
-    deleteObject(imageRef)
-      .then(() => {
-        toast.success('Delete file successfully');
-        setImageData({ ...imageData, imagePath: '' });
-      })
-      .catch((error) => {
-        toast.error(error);
-      });
-  };
+  const { handleDeleteImg, imageUpload, onSelectImages } = useImages(
+    setValue,
+    getValues
+  );
 
   return (
-    <PostAddNewStyles>
+    <section>
       <h1 className='dashboard-heading'>Add new post</h1>
       <form onSubmit={handleSubmit(addPost)}>
         <div className='grid grid-cols-2 gap-x-10 mb-10'>
@@ -193,8 +130,8 @@ const PostAddNew = () => {
             <ImagesUpload
               name='images'
               onChange={onSelectImages}
-              progress={imageData.progressBar}
-              image={imageData.imagePath}
+              progress={imageUpload.progressBar}
+              image={imageUpload.imagePath}
               handleDeleteImg={handleDeleteImg}
             ></ImagesUpload>
           </Field>
@@ -203,7 +140,7 @@ const PostAddNew = () => {
           Add Post
         </Button>
       </form>
-    </PostAddNewStyles>
+    </section>
   );
 };
 
