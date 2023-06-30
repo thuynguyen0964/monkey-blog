@@ -17,7 +17,7 @@ const Routing = () => {
       <Route path='signup' element={<SignUp />}></Route>
       <Route path='signin' element={<SignIn />}></Route>
       <Route path='*' element={<NotFound />}></Route>
-      <Route path='/details/:id' element={<PostDetails />}></Route>
+      <Route path='/details/:slug' element={<PostDetails />}></Route>
       <Route path='profile/:user' element={<Profile />}></Route>
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>

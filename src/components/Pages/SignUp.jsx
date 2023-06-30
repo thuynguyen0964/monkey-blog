@@ -32,21 +32,25 @@ const SignUp = () => {
   const { errors, isSubmitting } = formState;
 
   const handleSignUp = async (values) => {
-    await createUserWithEmailAndPassword(auth, values.email, values.password);
+    try {
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
 
-    await updateProfile(auth.currentUser, {
-      displayName: values.username,
-    });
+      await updateProfile(auth.currentUser, {
+        displayName: values.username,
+      });
 
-    const userRef = collection(db, 'users');
-    await addDoc(userRef, {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-    });
+      const userRef = collection(db, 'users');
+      await addDoc(userRef, {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
 
-    toast.success('Create accounts success!!');
-    navigate('/');
+      toast.success('Create accounts success!!');
+      navigate('/');
+    } catch (error) {
+      toast.warn(error.message);
+    }
   };
 
   useEffect(() => {

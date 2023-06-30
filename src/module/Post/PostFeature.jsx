@@ -50,7 +50,7 @@ const PostFeatureItemStyles = styled.div`
   }
 `;
 const PostFeature = ({ post }) => {
-  const { title, imageStore, author, category, id } = post;
+  const { title, imageStore, author, category, slug } = post;
   return (
     <PostFeatureItemStyles>
       <img src={imageStore} alt={title} className='post-image' />
@@ -60,7 +60,7 @@ const PostFeature = ({ post }) => {
           <PostCategory>{category}</PostCategory>
           <PostMeta author={author} date='June 25'></PostMeta>
         </div>
-        <PostTitle postId={id} size='large'>
+        <PostTitle postId={slug} size='large'>
           {title}
         </PostTitle>
       </div>
