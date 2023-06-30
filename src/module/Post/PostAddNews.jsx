@@ -23,7 +23,6 @@ const options = ['Knowledge', 'Nature', 'Developer', 'Tester'];
 
 const PostAddNew = () => {
   const { accounts } = useAuthCtx();
-
   useEffect(() => {
     document.title = 'New Post';
   }, []);
@@ -46,14 +45,11 @@ const PostAddNew = () => {
       status: postStatus.PENDING,
       category: '',
       hot: false,
-      imageStore: '',
     },
   });
 
-  const { handleDeleteImg, imageUpload, onSelectImages } = useImages(
-    setValue,
-    getValues
-  );
+  const { handleDeleteImg, imageUpload, onSelectImages, setImageUpload } =
+    useImages(setValue, getValues);
 
   const watchStatus = watch('status');
   const watchCategory = watch('category');
@@ -77,9 +73,9 @@ const PostAddNew = () => {
       status: postStatus.PENDING,
       category: '',
       hot: false,
-      imageStore: '',
     });
     setCategoryTitle(null);
+    setImageUpload({ ...imageUpload, imagePath: '' });
   };
 
   const handleGetOption = (type) => {

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
 import PostCategory from './components/PostCategory';
 import PostTitle from './components/PostTitle';
 import PostMeta from './components/PostMeta';
@@ -47,26 +49,27 @@ const PostFeatureItemStyles = styled.div`
     }
   }
 `;
-const PostFeature = () => {
+const PostFeature = ({ post }) => {
+  const { title, imageStore, author, category, id } = post;
   return (
     <PostFeatureItemStyles>
-      <img
-        src='https://images.unsplash.com/photo-1614624532983-4ce03382d63d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2662&q=80'
-        alt='unsplash'
-        className='post-image'
-      />
+      <img src={imageStore} alt={title} className='post-image' />
       <div className='post-overlay'></div>
       <div className='post-content'>
         <div className='post-top'>
-          <PostCategory>Kiến Thức</PostCategory>
-          <PostMeta author='Thuy Nguyen' date='June 25'></PostMeta>
+          <PostCategory>{category}</PostCategory>
+          <PostMeta author={author} date='June 25'></PostMeta>
         </div>
-        <PostTitle size='large'>
-          Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
+        <PostTitle postId={id} size='large'>
+          {title}
         </PostTitle>
       </div>
     </PostFeatureItemStyles>
   );
+};
+
+PostFeature.propTypes = {
+  post: PropTypes.object,
 };
 
 export default PostFeature;
