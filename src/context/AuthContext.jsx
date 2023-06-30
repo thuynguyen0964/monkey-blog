@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
 import { toast } from 'react-toastify';
-const AuthContext = createContext();
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/config';
+const AuthContext = createContext();
 
 const AuthProvider = (props) => {
-  const [accounts, setAccounts] = useState({});
-  const users = { accounts, setAccounts };
+  const [accounts, setAccounts] = useState();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (users) {
+      if (user) {
         setAccounts(user);
       }
     });
   }, []);
+
+  const users = { accounts, setAccounts };
   return <AuthContext.Provider {...props} value={users}></AuthContext.Provider>;
 };
 
