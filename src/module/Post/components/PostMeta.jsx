@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const PostMetaStyles = styled.div`
   display: flex;
@@ -43,7 +44,9 @@ const PostMeta = ({ date, author, color, className }) => {
     <PostMetaStyles color={color} className={className}>
       <span className='post-time'>{date}</span>
       <span className='post-dot'></span>
-      <span className='post-author'>{author}</span>
+      <Link to={`profile/${author}`}>
+        <span className='post-author hover:text-blue-500'>{author}</span>
+      </Link>
     </PostMetaStyles>
   );
 };

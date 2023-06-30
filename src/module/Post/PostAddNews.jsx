@@ -15,7 +15,14 @@ import { postStatus } from '../../utils/constant';
 import ImagesUpload from '../../components/upload/ImagesUpload';
 import { useImages } from '../../hooks/useImages';
 import Toggle from '../../components/toogle/Toggle';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuthCtx } from '../../context/AuthContext';
 
@@ -65,6 +72,7 @@ const PostAddNew = () => {
       ...newValues,
       imageStore: imageUpload.imagePath,
       userId: accounts?.uid,
+      createAt: serverTimestamp(),
     });
     toast.success('Add post sucessfully');
     reset({
