@@ -48,7 +48,7 @@ const ImagesUpload = (props) => {
       )}
       {!image && (
         <div
-          className='absolute w-10 h-1.5 bg-green-400 bottom-0 left-0 transition-all image-upload-progress'
+          className='absolute w-0 h-1.5 bg-green-400 bottom-0 left-0 transition-all image-upload-progress'
           style={{
             width: `${Math.ceil(progress)}%`,
           }}

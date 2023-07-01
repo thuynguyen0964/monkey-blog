@@ -12,12 +12,13 @@ const FieldStyles = styled.div`
   }
 `;
 
-const Field = ({ children }) => {
-  return <FieldStyles>{children}</FieldStyles>;
+const Field = ({ children, className = '' }) => {
+  return <FieldStyles className={className}>{children}</FieldStyles>;
 };
 
 Field.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default Field;
