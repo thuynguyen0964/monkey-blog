@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/config';

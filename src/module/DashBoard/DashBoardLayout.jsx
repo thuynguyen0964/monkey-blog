@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import DashboardHeader from './DashboardHeader';
 import Sidebar from './SideBar';
+import { useAuthCtx } from '../../context/AuthContext';
+import NotFound from '../../components/Pages/NotFound';
 
 const DashboardStyles = styled.div`
   max-width: 1600px;
@@ -24,6 +26,8 @@ const DashboardStyles = styled.div`
   }
 `;
 const DashboardLayout = () => {
+  const { accounts } = useAuthCtx();
+  if (!accounts) return <NotFound />;
   return (
     <DashboardStyles>
       <DashboardHeader></DashboardHeader>

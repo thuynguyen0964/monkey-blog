@@ -1,6 +1,7 @@
 import Pagination from '../../components/Paginate/Pagination';
 import Table from '../../components/Table/Table';
 import { useEffect } from 'react';
+import DashboardHeading from '../DashBoard/DashBoardHeading';
 
 const PostManage = () => {
   useEffect(() => {
@@ -10,7 +11,10 @@ const PostManage = () => {
     <>
       <div className='container nopadding'>
         <div className='py-5 flex justify-between items-center'>
-          <h2 className='text-2xl font-semibold'>Post Manager</h2>
+          <DashboardHeading
+            title='All posts'
+            desc='Manage all posts'
+          ></DashboardHeading>
           <div className='w-full mr-5 max-w-[300px]'>
             <input
               type='text'

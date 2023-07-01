@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -7,6 +6,7 @@ import {
   Label,
   Radio,
   toast,
+  FieldCheck,
 } from '../../components/import';
 import { Dropdown } from '../../components/Dropdown';
 import { useEffect, useState } from 'react';
@@ -25,8 +25,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuthCtx } from '../../context/AuthContext';
-
-const options = ['Knowledge', 'Nature', 'Developer', 'Tester'];
+import DashboardHeading from '../DashBoard/DashBoardHeading';
 
 const PostAddNew = () => {
   const { accounts } = useAuthCtx();
@@ -59,7 +58,6 @@ const PostAddNew = () => {
     useImages(setValue, getValues);
 
   const watchStatus = watch('status');
-  const watchCategory = watch('category');
   const watchHot = watch('hot', false);
 
   const addPost = async (values) => {
@@ -111,7 +109,7 @@ const PostAddNew = () => {
 
   return (
     <section>
-      <h1 className='dashboard-heading'>Add new post</h1>
+      <DashboardHeading title='Add post' desc='Add new post'></DashboardHeading>
       <form onSubmit={handleSubmit(addPost)} autoComplete='off'>
         <div className='grid grid-cols-2 mb-10 gap-x-10'>
           <Field>
@@ -136,35 +134,38 @@ const PostAddNew = () => {
         <div className='grid grid-cols-2 mb-10 gap-x-10'>
           <Field>
             <Label>Status</Label>
-            <div className='flex items-center gap-x-5'>
-              <Radio
-                name='status'
-                control={control}
-                checked={watchStatus === postStatus.APPROVED}
-                onClick={() => setValue('status', postStatus.APPROVED)}
-                value={postStatus.APPROVED}
-              >
-                Approved
-              </Radio>
-              <Radio
-                name='status'
-                control={control}
-                checked={watchStatus === postStatus.PENDING}
-                onClick={() => setValue('status', postStatus.PENDING)}
-                value={postStatus.PENDING}
-              >
-                Pending
-              </Radio>
-              <Radio
-                name='status'
-                control={control}
-                checked={watchStatus === postStatus.REJECT}
-                onClick={() => setValue('status', postStatus.REJECT)}
-                value={postStatus.REJECT}
-              >
-                Reject
-              </Radio>
-            </div>
+            <FieldCheck>
+              <div className='flex items-center gap-x-5'>
+                <Radio
+                  name='status'
+                  control={control}
+                  checked={watchStatus === postStatus.APPROVED}
+                  onClick={() => setValue('status', postStatus.APPROVED)}
+                  value={postStatus.APPROVED}
+                >
+                  Approved
+                </Radio>
+
+                <Radio
+                  name='status'
+                  control={control}
+                  checked={watchStatus === postStatus.PENDING}
+                  onClick={() => setValue('status', postStatus.PENDING)}
+                  value={postStatus.PENDING}
+                >
+                  Pending
+                </Radio>
+                <Radio
+                  name='status'
+                  control={control}
+                  checked={watchStatus === postStatus.REJECT}
+                  onClick={() => setValue('status', postStatus.REJECT)}
+                  value={postStatus.REJECT}
+                >
+                  Reject
+                </Radio>
+              </div>
+            </FieldCheck>
           </Field>
 
           <Field>
@@ -179,7 +180,7 @@ const PostAddNew = () => {
         </div>
         <div className='grid grid-cols-2 mb-10 gap-x-10'>
           <Field>
-            <Label>Category</Label>
+            <Label>Categories</Label>
             <Dropdown>
               <Dropdown.Select placeholder='Choose your category'></Dropdown.Select>
               <Dropdown.List>

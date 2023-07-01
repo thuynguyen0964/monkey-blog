@@ -1,12 +1,12 @@
 import { useDropdown } from './Context';
 import PropTypes from 'prop-types';
 
-const Select = ({ placeholder = '' }) => {
+const Select = ({ placeholder = '', className }) => {
   const { show, handleToggleDropdown } = useDropdown();
   return (
     <>
       <div
-        className='flex items-center justify-between p-5 bg-[#E7ECF3] rounded cursor-pointer font-medium'
+        className={`flex items-center justify-between p-5 bg-[#E7ECF3] rounded cursor-pointer font-medium ${className}`}
         onClick={handleToggleDropdown}
       >
         <span>{placeholder}</span>
@@ -50,6 +50,7 @@ const Select = ({ placeholder = '' }) => {
 
 Select.propTypes = {
   placeholder: PropTypes.string,
+  className: PropTypes.node,
 };
 
 export default Select;

@@ -9,6 +9,10 @@ import Dashboard from '../Pages/DashBoard';
 import PostManage from '../../module/Post/PostManage';
 import PostAddNew from '../../module/Post/PostAddNews';
 import Profile from '../Pages/Profile';
+import CategoryAddNew from '../../drafts/CategoryAddNews';
+import UserAddNew from '../../drafts/UserAddNew';
+import CategoryManage from '../../module/Category/CategoryManage';
+import UserManage from '../../module/User/UserManage';
 
 const Routing = () => {
   return (
@@ -19,10 +23,17 @@ const Routing = () => {
       <Route path='*' element={<NotFound />}></Route>
       <Route path='/details/:slug' element={<PostDetails />}></Route>
       <Route path='/:user' element={<Profile />}></Route>
+
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>
-        <Route path='/manage/post' element={<PostManage />}></Route>
-        <Route path='/manage/add' element={<PostAddNew />}></Route>
+        <Route path='manage/post' element={<PostManage />}></Route>
+        <Route path='manage/add' element={<PostAddNew />}></Route>
+
+        <Route path='manage/category' element={<CategoryManage />}></Route>
+        <Route path='manage/category/add' element={<CategoryAddNew />}></Route>
+
+        <Route path='manage/user' element={<UserManage />}></Route>
+        <Route path='manage/user/add' element={<UserAddNew />}></Route>
       </Route>
     </Routes>
   );

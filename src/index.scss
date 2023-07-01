@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,7 +15,7 @@
 
 html,
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Epilogue', sans-serif;
 }
 
 img,
@@ -158,4 +158,8 @@ h6 {
 .active {
   background-color: #2cccff;
   border-radius: 6px;
+}
+
+.form-layout {
+  margin-bottom: 20px;
 }

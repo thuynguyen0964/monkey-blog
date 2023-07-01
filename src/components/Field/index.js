@@ -1,3 +1,4 @@
 import Field from './Field';
+import FieldCheck from './FieldCheck';
 
-export { Field };
+export { Field, FieldCheck };

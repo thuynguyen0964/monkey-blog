@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import DashboardHeading from '../../module/DashBoard/DashBoardHeading';
 
 const Dashboard = () => {
   useEffect(() => {
@@ -6,7 +7,10 @@ const Dashboard = () => {
   }, []);
   return (
     <div>
-      <h1 className='dashboard-heading'>Dashboard page</h1>
+      <DashboardHeading
+        title='Dashboard'
+        desc='Overview dashboard monitor'
+      ></DashboardHeading>
     </div>
   );
 };

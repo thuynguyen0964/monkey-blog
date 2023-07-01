@@ -6,7 +6,7 @@ const FieldStyles = styled.div`
   flex-direction: column;
   align-items: flex-start;
   row-gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   :last-child {
     margin-bottom: 0;
   }
