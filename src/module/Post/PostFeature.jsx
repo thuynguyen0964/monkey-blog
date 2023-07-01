@@ -50,7 +50,17 @@ const PostFeatureItemStyles = styled.div`
   }
 `;
 const PostFeature = ({ post }) => {
-  const { title, imageStore, author, category, slug } = post;
+  if (!post) return null;
+  const { title, author, category, createAt, imageStore, slug } = post;
+
+  const fomatDate = (time) => {
+    if (typeof time === 'undefined') return;
+    const date = new Date(time?.seconds) * 1000;
+    const results = new Date(date).toLocaleDateString('vi-VI');
+    return results;
+  };
+  const now = new Date(Date.now()).toLocaleDateString('vi-VI');
+
   return (
     <PostFeatureItemStyles>
       <img src={imageStore} alt={title} className='post-image' />
@@ -58,7 +68,10 @@ const PostFeature = ({ post }) => {
       <div className='post-content'>
         <div className='post-top'>
           <PostCategory>{category}</PostCategory>
-          <PostMeta author={author} date='June 25'></PostMeta>
+          <PostMeta
+            author={author}
+            date={fomatDate(createAt) || now}
+          ></PostMeta>
         </div>
         <PostTitle postId={slug} size='large'>
           {title}

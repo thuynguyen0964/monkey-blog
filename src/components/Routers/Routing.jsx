@@ -18,7 +18,7 @@ const Routing = () => {
       <Route path='signin' element={<SignIn />}></Route>
       <Route path='*' element={<NotFound />}></Route>
       <Route path='/details/:slug' element={<PostDetails />}></Route>
-      <Route path='profile/:user' element={<Profile />}></Route>
+      <Route path='/:user' element={<Profile />}></Route>
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>
         <Route path='/manage/post' element={<PostManage />}></Route>

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Button } from '../../components/import';
 import avatar from '/src/assets/doraemon.jpg';
+import { Link } from 'react-router-dom';
+import { useAuthCtx } from '../../context/AuthContext';
 
 const DashboardHeaderStyles = styled.div`
   background-color: white;
@@ -22,13 +24,16 @@ const DashboardHeaderStyles = styled.div`
 `;
 
 const DashboardHeader = () => {
+  const { accounts } = useAuthCtx();
   return (
     <DashboardHeaderStyles>
       <Button to='/manage/add' className='leading-8'>
         Write Post
       </Button>
       <div className='header-avatar'>
-        <img src={avatar} alt='' />
+        <Link to={`/${accounts?.displayName}`}>
+          <img src={avatar} alt={accounts?.displayName} />
+        </Link>
       </div>
     </DashboardHeaderStyles>
   );

@@ -112,7 +112,7 @@ const PostAddNew = () => {
   return (
     <section>
       <h1 className='dashboard-heading'>Add new post</h1>
-      <form onSubmit={handleSubmit(addPost)}>
+      <form onSubmit={handleSubmit(addPost)} autoComplete='off'>
         <div className='grid grid-cols-2 mb-10 gap-x-10'>
           <Field>
             <Label>Title</Label>
