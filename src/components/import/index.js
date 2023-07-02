@@ -1,6 +1,6 @@
 import { Button } from '../Button';
 import { EyeClose, EyeIcon } from '../Icon';
-import { Label } from '../label';
+import { Label, LabelStatus } from '../label';
 import { Input } from '../input';
 import { Field, FieldCheck } from '../Field';
 import logo from '/src/assets/monkey.svg';
@@ -26,4 +26,5 @@ export {
   Radio,
   FieldCheck,
   Table,
+  LabelStatus,
 };

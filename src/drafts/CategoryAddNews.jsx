@@ -99,7 +99,11 @@ const CategoryAddNew = () => {
             </div>
           </Field>
         </div>
-        <Button isLoading={isSubmitting} className='mx-auto'>
+        <Button
+          disabled={isSubmitting}
+          isLoading={isSubmitting}
+          className='mx-auto'
+        >
           Add category
         </Button>
       </form>

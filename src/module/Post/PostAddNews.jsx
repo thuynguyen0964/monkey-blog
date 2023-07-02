@@ -88,20 +88,18 @@ const PostAddNew = () => {
     setCategoryTitle(type?.name);
   };
 
-  async function getCategories() {
-    const postTypes = [];
-    try {
-      const colRef = collection(db, 'categories');
-      const q = query(colRef);
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        postTypes.push({ id: doc.id, ...doc.data() });
-      });
-      setCategoriesType(postTypes);
-    } catch (error) {
-      toast.error(error);
-    }
-  }
+  // get categgory in DB with custom hook
+  const getCategories = async () => {
+    const cateArr = [];
+    const colRef = collection(db, 'categories');
+    const q = query(colRef);
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      cateArr.push({ id: doc.id, ...doc.data() });
+    });
+    setCategoriesType(cateArr);
+  };
+
   useEffect(() => {
     getCategories();
   }, []);
