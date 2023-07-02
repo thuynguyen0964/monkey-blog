@@ -3,21 +3,40 @@ import { useEffect, useState } from 'react';
 import { Button, Table, LabelStatus } from '../../components/import';
 import { Remover, Update, Views } from '../../components/action';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase/config';
+import swal from 'sweetalert';
 
 const CategoryManage = () => {
   const { pathname } = useLocation();
   const [categoryList, setCategoryList] = useState([]);
 
   const getCategoriesInDB = () => {
-    const results = [];
     const colRef = collection(db, 'categories');
     onSnapshot(colRef, (snapshot) => {
+      const results = [];
       snapshot.forEach((doc) => {
         results.push({ id: doc.id, ...doc.data() });
       });
       setCategoryList(results);
+    });
+  };
+
+  const handleDelCategories = (id) => {
+    const singleDoc = doc(db, 'categories', id);
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await deleteDoc(singleDoc);
+        swal('Poof! Has been deleted!', {
+          icon: 'success',
+        });
+      }
     });
   };
 
@@ -59,7 +78,7 @@ const CategoryManage = () => {
                   <div className='flex gap-5 text-gray-400'>
                     <Views></Views>
                     <Update></Update>
-                    <Remover></Remover>
+                    <Remover onClick={() => handleDelCategories(category.id)} />
                   </div>
                 </td>
               </tr>
