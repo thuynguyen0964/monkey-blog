@@ -21,7 +21,6 @@ import {
   getDocs,
   query,
   serverTimestamp,
-  where,
 } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuthCtx } from '../../context/AuthContext';
@@ -93,7 +92,7 @@ const PostAddNew = () => {
     const postTypes = [];
     try {
       const colRef = collection(db, 'categories');
-      const q = query(colRef, where('status', '==', postStatus.PENDING));
+      const q = query(colRef);
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         postTypes.push({ id: doc.id, ...doc.data() });

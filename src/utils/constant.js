@@ -15,6 +15,7 @@ export const postStatus = {
   APPROVED: 'approved',
   PENDING: 'pending',
   REJECT: 'reject',
+  UNAPPROVED: 'unpproved',
 };
 
 /** @type {any} */

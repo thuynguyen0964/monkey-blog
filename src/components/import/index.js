@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import ShowPass from '../input/ShowPass';
 import Checkbox from '../Checkbox/Checkbox';
 import Radio from '../Checkbox/Radio';
+import Table from '../Table/Table';
 
 export {
   Button,
@@ -24,4 +25,5 @@ export {
   Checkbox,
   Radio,
   FieldCheck,
+  Table,
 };

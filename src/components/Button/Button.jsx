@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 const ButtonStyles = styled.button`
   display: block;
-  cursor: pointer;
   padding: 10px 20px;
   color: #fff;
   font-size: 16px;
@@ -26,7 +25,7 @@ const ButtonStyles = styled.button`
 const Button = ({
   type,
   children,
-  isLoading,
+  isLoading = false,
   to,
   onClick,
   className,
