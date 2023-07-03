@@ -44,7 +44,7 @@ const PostMeta = ({ date, author, color, className }) => {
     <PostMetaStyles color={color} className={className}>
       <span className='post-time'>{date}</span>
       <span className='post-dot'></span>
-      <Link to={`/${author}`}>
+      <Link to={`profile/${author}`}>
         <span className='post-author hover:text-blue-500'>{author}</span>
       </Link>
     </PostMetaStyles>

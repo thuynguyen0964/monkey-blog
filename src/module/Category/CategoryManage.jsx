@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button, Table, LabelStatus } from '../../components/import';
 import { Remover, Update, Views } from '../../components/action';
@@ -11,6 +11,12 @@ const CategoryManage = () => {
   const { pathname } = useLocation();
   const [categoryList, setCategoryList] = useState([]);
 
+  const navigate = useNavigate();
+  const handleChangePages = (path, id, name) => {
+    navigate(`${pathname}/${path}?id=${id}&name=${name}`);
+  };
+
+  // realtime firestore must be in useEffect
   const getCategoriesInDB = () => {
     const colRef = collection(db, 'categories');
     onSnapshot(colRef, (snapshot) => {
@@ -33,7 +39,7 @@ const CategoryManage = () => {
     }).then(async (willDelete) => {
       if (willDelete) {
         await deleteDoc(singleDoc);
-        swal('Poof! Has been deleted!', {
+        swal('Remove cotegories successsfully!!', {
           icon: 'success',
         });
       }
@@ -77,7 +83,11 @@ const CategoryManage = () => {
                 <td>
                   <div className='flex gap-5 text-gray-400'>
                     <Views></Views>
-                    <Update></Update>
+                    <Update
+                      onClick={() =>
+                        handleChangePages('change', category.id, category.name)
+                      }
+                    />
                     <Remover onClick={() => handleDelCategories(category.id)} />
                   </div>
                 </td>

@@ -31,7 +31,7 @@ const DashboardHeader = () => {
         Write Post
       </Button>
       <div className='header-avatar'>
-        <Link to={`/${accounts?.displayName}`}>
+        <Link to={`profile/${accounts?.displayName}`}>
           <img src={avatar} alt={accounts?.displayName} />
         </Link>
       </div>

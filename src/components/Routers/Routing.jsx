@@ -13,6 +13,7 @@ import CategoryAddNew from '../../drafts/CategoryAddNews';
 import UserAddNew from '../../drafts/UserAddNew';
 import CategoryManage from '../../module/Category/CategoryManage';
 import UserManage from '../../module/User/UserManage';
+import CategoryUpdate from '../../module/Category/CategoryUpdate';
 
 const Routing = () => {
   return (
@@ -21,8 +22,8 @@ const Routing = () => {
       <Route path='signup' element={<SignUp />}></Route>
       <Route path='signin' element={<SignIn />}></Route>
       <Route path='*' element={<NotFound />}></Route>
-      <Route path='/details/:slug' element={<PostDetails />}></Route>
-      <Route path='/profile/:user' element={<Profile />}></Route>
+      <Route path='details/:slug' element={<PostDetails />}></Route>
+      <Route path='profile/:user' element={<Profile />}></Route>
 
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />}></Route>
@@ -31,6 +32,7 @@ const Routing = () => {
 
         <Route path='manage/category' element={<CategoryManage />}></Route>
         <Route path='manage/category/add' element={<CategoryAddNew />}></Route>
+        <Route path='manage/category/change' element={<CategoryUpdate />} />
 
         <Route path='manage/user' element={<UserManage />}></Route>
         <Route path='manage/user/add' element={<UserAddNew />}></Route>
