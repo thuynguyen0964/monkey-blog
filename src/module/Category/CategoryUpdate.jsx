@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
 import {
   Button,
@@ -13,26 +12,60 @@ import {
 } from '../../components/import';
 import { postStatus } from '../../utils/constant';
 import { useForm } from 'react-hook-form';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase/config';
+import slugify from 'slugify';
 
 const CategoryUpdate = () => {
   const [params] = useSearchParams();
-  const name = params.get('name');
+  const categoryId = params.get('id');
+  const colRef = doc(db, 'categories', categoryId);
+
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const goBackPages = (path, target) => {
+    if (path.includes(target)) {
+      const index = path.search(target);
+      const newPath = path.slice(0, index - 1);
+      return newPath;
+    }
+  };
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
     watch,
+    reset,
   } = useForm();
   const watchStatus = watch('status');
-  const handleChangeCategories = () => {
-    toast.success('Change category successfully!!');
+
+  const handleChangeCategories = async (values) => {
+    await updateDoc(colRef, {
+      ...values,
+      name: values.name,
+      slug: slugify(values.name, { lower: true }),
+      status: values.status,
+    });
+    navigate(goBackPages(pathname, 'change'));
+    toast.success('Change successfully!!');
   };
+
+  const getSingleCategory = async () => {
+    const singleDoc = await getDoc(colRef);
+    reset(singleDoc.data());
+  };
+
+  useEffect(() => {
+    getSingleCategory();
+  }, [categoryId]);
+
   return (
     <>
       <DashboardHeading
         title='Update Categories'
-        desc={`Update your categories name : ${name}`}
+        desc={`Update your categories id : ${categoryId}`}
       />
       <form onSubmit={handleSubmit(handleChangeCategories)}>
         <div className='form-layout'>
@@ -80,13 +113,17 @@ const CategoryUpdate = () => {
             </Field>
           </div>
         </div>
-        <Button
-          disabled={isSubmitting}
-          isLoading={isSubmitting}
-          className='mx-auto'
-        >
-          Change category
-        </Button>
+        <div className='flex items-center justify-center gap-3'>
+          <Button
+            to={goBackPages(pathname, 'change')}
+            className='!bg-green-500'
+          >
+            Back
+          </Button>
+          <Button disabled={isSubmitting} isLoading={isSubmitting}>
+            Change category
+          </Button>
+        </div>
       </form>
     </>
   );

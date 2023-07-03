@@ -67,6 +67,7 @@ const CategoryManage = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Slug</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -77,6 +78,9 @@ const CategoryManage = () => {
               <tr key={category.id}>
                 <td>{category.id}</td>
                 <td>{category.name}</td>
+                <td>
+                  <span className='italic text-gray-500'>{category.slug}</span>
+                </td>
                 <td>
                   <LabelStatus type='success'>{category.status}</LabelStatus>
                 </td>
