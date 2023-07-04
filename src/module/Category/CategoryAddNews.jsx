@@ -6,15 +6,15 @@ import {
   Radio,
   toast,
   FieldCheck,
-} from '../components/import';
-import DashboardHeading from '../module/DashBoard/DashBoardHeading';
+} from '../../components/import';
+import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { useForm } from 'react-hook-form';
-import { postStatus } from '../utils/constant';
+import { postStatus } from '../../utils/constant';
 import slugify from 'slugify';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../../firebase/config';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { usePath } from '../hooks/usePath';
+import { usePath } from '../../hooks/usePath';
 
 const CategoryAddNew = () => {
   const { control, formState, handleSubmit, watch, reset } = useForm({

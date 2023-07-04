@@ -5,18 +5,15 @@ import {
   Input,
   Radio,
   Button,
-} from '../components/import';
-import DashboardHeading from '../module/DashBoard/DashBoardHeading';
+} from '../../components/import';
+import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { useForm } from 'react-hook-form';
 
 const UserAddNew = () => {
   const { control } = useForm();
   return (
     <div>
-      <DashboardHeading
-        title='New user'
-        desc='Add new user to system'
-      ></DashboardHeading>
+      <DashboardHeading title='New user' desc='Add new user to system' />
       <form autoComplete='off'>
         <div className='form-layout'>
           <Field>

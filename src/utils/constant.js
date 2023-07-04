@@ -22,3 +22,5 @@ export const postStatus = {
 export const metadata = {
   contentType: 'image/jpeg',
 };
+
+export const ITEM_PER_PAGE = 2;

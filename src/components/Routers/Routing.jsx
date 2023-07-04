@@ -9,11 +9,11 @@ import Dashboard from '../Pages/DashBoard';
 import PostManage from '../../module/Post/PostManage';
 import PostAddNew from '../../module/Post/PostAddNews';
 import Profile from '../Pages/Profile';
-import CategoryAddNew from '../../drafts/CategoryAddNews';
-import UserAddNew from '../../drafts/UserAddNew';
 import CategoryManage from '../../module/Category/CategoryManage';
 import UserManage from '../../module/User/UserManage';
 import CategoryUpdate from '../../module/Category/CategoryUpdate';
+import CategoryAddNew from '../../module/Category/CategoryAddNews';
+import UserAddNew from '../../module/User/UserAddNew';
 
 const Routing = () => {
   return (

@@ -17,17 +17,20 @@ import {
 import { db } from '../../firebase/config';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
+import { ITEM_PER_PAGE } from '../../utils/constant';
 
 const CategoryManage = () => {
   const { pathname } = useLocation();
   const [categoryList, setCategoryList] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [lastDoc, setLastDoc] = useState();
+  const [filterValue, setFilterValues] = useState('');
+  const [lastDoc, setLastDoc] = useState({});
+  const [total, setTotal] = useState(0);
 
   const handleFilter = debounce((e) => {
-    setFilter(e.target.value);
+    setFilterValues(e.target.value);
   }, 1000);
 
+  // change pathname
   const navigate = useNavigate();
   const handleChangePages = (path, id, name) => {
     navigate(`${pathname}/${path}?id=${id}&name=${name}`);
@@ -36,36 +39,41 @@ const CategoryManage = () => {
   // realtime firestore must be in useEffect
   const getCategoriesInDB = async () => {
     const colRef = collection(db, 'categories');
-    const newColRef = filter
+    const newColRef = filterValue
       ? query(
           colRef,
-          where('slug', '>=', filter),
-          where('slug', '<=', filter + 'utf8')
+          where('slug', '>=', filterValue),
+          where('slug', '<=', filterValue + 'utf8')
         )
-      : query(colRef, limit(3));
+      : query(colRef, limit(ITEM_PER_PAGE));
+    onSnapshot(colRef, (snapshot) => {
+      setTotal(snapshot.size);
+    });
 
-    const documentSnapshots = await getDocs(newColRef);
-    const lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    // get the document -> get the last item of document
+    const document = await getDocs(newColRef);
+    const lastDocItem = document.docs[document.docs.length - 1];
+
     onSnapshot(newColRef, (snapshot) => {
       const results = [];
       snapshot.forEach((doc) => {
         results.push({ id: doc.id, ...doc.data() });
       });
       setCategoryList(results);
-      filter && toast.success(`${results.length} categories was found`);
+      filterValue && toast.success(`${results.length} categories was found`);
     });
-    setLastDoc(lastVisible);
+
+    // set the last item of documents
+    setLastDoc(lastDocItem);
   };
 
-  // paginate
+  // paginate firebase
   const handleLoadMore = async () => {
     const nextRef = query(
       collection(db, 'categories'),
-      startAfter(lastDoc),
-      limit(3)
+      startAfter(lastDoc || 0),
+      limit(ITEM_PER_PAGE)
     );
-    setLastDoc(nextRef);
 
     onSnapshot(nextRef, (snapshot) => {
       const results = [];
@@ -74,6 +82,9 @@ const CategoryManage = () => {
       });
       setCategoryList([...categoryList, ...results]);
     });
+    const documents = await getDocs(nextRef);
+    const lastDocItem = documents.docs[documents.docs.length - 1];
+    setLastDoc(lastDocItem);
   };
 
   const handleDelCategories = (id) => {
@@ -96,7 +107,7 @@ const CategoryManage = () => {
 
   useEffect(() => {
     getCategoriesInDB();
-  }, [filter]);
+  }, [filterValue]);
 
   return (
     <>
@@ -151,7 +162,11 @@ const CategoryManage = () => {
       </Table>
 
       <div className='mt-8'>
-        <Button onClick={handleLoadMore} className='mx-auto'>
+        <Button
+          disabled={categoryList.length === total}
+          onClick={handleLoadMore}
+          className='mx-auto'
+        >
           Load More
         </Button>
       </div>
