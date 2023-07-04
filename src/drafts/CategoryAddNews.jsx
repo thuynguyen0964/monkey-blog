@@ -13,6 +13,8 @@ import { postStatus } from '../utils/constant';
 import slugify from 'slugify';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { usePath } from '../hooks/usePath';
 
 const CategoryAddNew = () => {
   const { control, formState, handleSubmit, watch, reset } = useForm({
@@ -22,7 +24,10 @@ const CategoryAddNew = () => {
       status: postStatus.APPROVED,
     },
   });
+  const { pathname } = useLocation();
   const watchStatus = watch('status');
+  const historyPath = usePath(pathname, 'add');
+  const navigate = useNavigate();
 
   const { isSubmitting } = formState;
   const handleAddNews = async (data) => {
@@ -34,8 +39,8 @@ const CategoryAddNew = () => {
         ...values,
         createAt: serverTimestamp(),
       });
+      navigate(historyPath);
       toast.success('Create category successfully!!');
-      console.log('🚀 values:', values);
     } catch (error) {
       toast.error(error.message);
     } finally {

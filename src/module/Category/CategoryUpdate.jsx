@@ -14,6 +14,7 @@ import { postStatus } from '../../utils/constant';
 import { useForm } from 'react-hook-form';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
+import { usePath } from '../../hooks/usePath';
 import slugify from 'slugify';
 
 const CategoryUpdate = () => {
@@ -23,14 +24,7 @@ const CategoryUpdate = () => {
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const goBackPages = (path, target) => {
-    if (path.includes(target)) {
-      const index = path.search(target);
-      const newPath = path.slice(0, index - 1);
-      return newPath;
-    }
-  };
+  const historyPath = usePath(pathname, 'change');
 
   const {
     control,
@@ -48,7 +42,7 @@ const CategoryUpdate = () => {
       slug: slugify(values.name, { lower: true }),
       status: values.status,
     });
-    navigate(goBackPages(pathname, 'change'));
+    navigate(historyPath);
     toast.success('Change successfully!!');
   };
 
@@ -114,10 +108,7 @@ const CategoryUpdate = () => {
           </div>
         </div>
         <div className='flex items-center justify-center gap-3'>
-          <Button
-            to={goBackPages(pathname, 'change')}
-            className='!bg-green-500'
-          >
+          <Button to={historyPath} className='!bg-green-500'>
             Back
           </Button>
           <Button disabled={isSubmitting} isLoading={isSubmitting}>

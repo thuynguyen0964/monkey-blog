@@ -1,15 +1,32 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Button, Table, LabelStatus } from '../../components/import';
+import { Button, Table, LabelStatus, toast } from '../../components/import';
 import { Remover, Update, Views } from '../../components/action';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
-import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  limit,
+  onSnapshot,
+  query,
+  where,
+  getDocs,
+  startAfter,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import swal from 'sweetalert';
+import { debounce } from 'lodash';
 
 const CategoryManage = () => {
   const { pathname } = useLocation();
   const [categoryList, setCategoryList] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [lastDoc, setLastDoc] = useState();
+
+  const handleFilter = debounce((e) => {
+    setFilter(e.target.value);
+  }, 1000);
 
   const navigate = useNavigate();
   const handleChangePages = (path, id, name) => {
@@ -17,14 +34,45 @@ const CategoryManage = () => {
   };
 
   // realtime firestore must be in useEffect
-  const getCategoriesInDB = () => {
+  const getCategoriesInDB = async () => {
     const colRef = collection(db, 'categories');
-    onSnapshot(colRef, (snapshot) => {
+    const newColRef = filter
+      ? query(
+          colRef,
+          where('slug', '>=', filter),
+          where('slug', '<=', filter + 'utf8')
+        )
+      : query(colRef, limit(3));
+
+    const documentSnapshots = await getDocs(newColRef);
+    const lastVisible =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    onSnapshot(newColRef, (snapshot) => {
       const results = [];
       snapshot.forEach((doc) => {
         results.push({ id: doc.id, ...doc.data() });
       });
       setCategoryList(results);
+      filter && toast.success(`${results.length} categories was found`);
+    });
+    setLastDoc(lastVisible);
+  };
+
+  // paginate
+  const handleLoadMore = async () => {
+    const nextRef = query(
+      collection(db, 'categories'),
+      startAfter(lastDoc),
+      limit(3)
+    );
+    setLastDoc(nextRef);
+
+    onSnapshot(nextRef, (snapshot) => {
+      const results = [];
+      snapshot.forEach((doc) => {
+        results.push({ id: doc.id, ...doc.data() });
+      });
+      setCategoryList([...categoryList, ...results]);
     });
   };
 
@@ -48,7 +96,7 @@ const CategoryManage = () => {
 
   useEffect(() => {
     getCategoriesInDB();
-  }, []);
+  }, [filter]);
 
   return (
     <>
@@ -57,6 +105,8 @@ const CategoryManage = () => {
         <input
           type='text'
           className='input-global ml-auto'
+          defaultValue=''
+          onChange={handleFilter}
           placeholder='Enter to search...'
         />
         <Button to={`${pathname}/add`}>New Category</Button>
@@ -99,6 +149,12 @@ const CategoryManage = () => {
             ))}
         </tbody>
       </Table>
+
+      <div className='mt-8'>
+        <Button onClick={handleLoadMore} className='mx-auto'>
+          Load More
+        </Button>
+      </div>
     </>
   );
 };
