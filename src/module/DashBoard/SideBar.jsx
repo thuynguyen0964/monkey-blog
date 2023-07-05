@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, logo, toast } from '../../components/import';
+import { Button, logo } from '../../components/import';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/config';
+import swal from 'sweetalert';
 
 const SidebarStyles = styled.div`
   width: 300px;
@@ -118,15 +119,25 @@ const sidebarLinks = [
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      toast.success('Signout successfully');
-      navigate('signin');
-    } catch (error) {
-      toast.error(error.message);
-    }
+
+  const handleLogout = () => {
+    swal({
+      title: 'Are you sure?',
+      text: 'We will miss you so much, bro!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willLogout) => {
+      if (willLogout) {
+        await signOut(auth);
+        swal('Logout successfully', {
+          icon: 'success',
+        });
+        navigate('signin');
+      }
+    });
   };
+
   return (
     <SidebarStyles className='sidebar'>
       <div className='sidebar-logo'>
@@ -146,7 +157,9 @@ const Sidebar = () => {
           <span className='menu-text'>{link.title}</span>
         </NavLink>
       ))}
-      <Button className='w-full !bg-red-400' onClick={handleSignOut}>Logout</Button>
+      <Button className='w-full !bg-red-400' onClick={handleLogout}>
+        Logout
+      </Button>
     </SidebarStyles>
   );
 };

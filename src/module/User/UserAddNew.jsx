@@ -52,6 +52,7 @@ const UserAddNew = () => {
               ></Input>
             </Field>
             <Field className='flex-1'>
+              <Label>Avatar</Label>
               <ImagesUpload />
             </Field>
           </FieldCheck>
