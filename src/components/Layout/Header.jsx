@@ -68,8 +68,9 @@ const HeaderStyles = styled.header`
 `;
 const Header = () => {
   const { accounts } = useAuthCtx();
-
   const { control } = useForm();
+
+
   return (
     <HeaderStyles>
       <div className='container'>
@@ -77,14 +78,17 @@ const Header = () => {
           <Link to='/'>
             <img src={logo} alt='Monkey Blogging' className='header-logo' />
           </Link>
-          <ul className='header-menu'>
-            {ListMenu.length > 0 &&
-              ListMenu.map((menu, index) => (
-                <li className='menu-item' key={index}>
-                  <NavLink to={menu.to}>{menu.title}</NavLink>
-                </li>
-              ))}
-          </ul>
+
+          {accounts?.email && (
+            <ul className='header-menu'>
+              {ListMenu.length > 0 &&
+                ListMenu.map((menu, index) => (
+                  <li className='menu-item' key={index}>
+                    <NavLink to={menu.to}>{menu.title}</NavLink>
+                  </li>
+                ))}
+            </ul>
+          )}
 
           <div className='header-cta'>
             <Input
@@ -93,7 +97,7 @@ const Header = () => {
               control={control}
               name='filterBlog'
             ></Input>
-            {accounts ? (
+            {accounts?.email ? (
               <div className='header-auth'>
                 <Link to={`profile/${accounts?.displayName}`}>
                   <img src={avatar} alt='avatar' className='avatar' />

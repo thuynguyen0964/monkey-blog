@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { logo } from '../../components/import';
+import { Button, logo, toast } from '../../components/import';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 
 const SidebarStyles = styled.div`
   width: 300px;
@@ -30,6 +32,7 @@ const SidebarStyles = styled.div`
     cursor: pointer;
   }
 `;
+
 const sidebarLinks = [
   {
     title: 'Dashboard',
@@ -111,29 +114,19 @@ const sidebarLinks = [
       </svg>
     ),
   },
-  {
-    title: 'Logout',
-    url: '/',
-    icon: (
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        className='h-6 w-6'
-        fill='none'
-        viewBox='0 0 24 24'
-        stroke='currentColor'
-        strokeWidth='2'
-      >
-        <path
-          strokeLinecap='round'
-          strokeLinejoin='round'
-          d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'
-        />
-      </svg>
-    ),
-    onClick: () => {},
-  },
 ];
+
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      toast.success('Signout successfully');
+      navigate('signin');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <SidebarStyles className='sidebar'>
       <div className='sidebar-logo'>
@@ -143,11 +136,17 @@ const Sidebar = () => {
         <span>Monkey Blogging</span>
       </div>
       {sidebarLinks.map((link) => (
-        <NavLink to={link.url} className='menu-item' key={uuidv4()}>
+        <NavLink
+          to={link.url}
+          onClick={link.onClick}
+          className='menu-item'
+          key={uuidv4()}
+        >
           <span className='menu-icon'>{link.icon}</span>
           <span className='menu-text'>{link.title}</span>
         </NavLink>
       ))}
+      <Button className='w-full !bg-red-400' onClick={handleSignOut}>Logout</Button>
     </SidebarStyles>
   );
 };

@@ -11,6 +11,8 @@ const AuthProvider = (props) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setAccounts(user);
+      }else{
+        setAccounts({})
       }
     });
   }, []);
