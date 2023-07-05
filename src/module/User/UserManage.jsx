@@ -5,6 +5,8 @@ import { db } from '../../firebase/config';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { Button, LabelStatus, Table } from '../../components/import';
 import { Remover, Update } from '../../components/action';
+import defaultImg from '/src/assets/doraemon.jpg';
+import { UserProps } from '../../utils/constant';
 
 const UserManage = () => {
   const { pathname } = useLocation();
@@ -26,14 +28,38 @@ const UserManage = () => {
     });
   };
 
+  const shortName = (string, index) => {
+    if (typeof string !== 'string' || typeof index !== 'number') return;
+    const newString = string.slice(0, index) + '...';
+    return newString;
+  };
+
   useEffect(() => {
     getUserInDB();
   }, []);
 
+  const renderLabelStatus = (status) => {
+    switch (status) {
+      case UserProps.ACTIVE:
+        return <LabelStatus type='success'>{UserProps.ACTIVE}</LabelStatus>;
+      case UserProps.PENDING:
+        return <LabelStatus type='warning'>{UserProps.PENDING}</LabelStatus>;
+      case UserProps.BANNER:
+        return <LabelStatus type='danger'>{UserProps.BANNER}</LabelStatus>;
+      default:
+        break;
+    }
+  };
   return (
     <>
-      <div className='flex justify-between items-start'>
+      <div className='flex justify-between items-start gap-3'>
         <DashboardHeading title='Users' desc='Manage your user' />
+        <input
+          type='text'
+          className='input-global ml-auto'
+          defaultValue=''
+          placeholder='Enter to search...'
+        />
         <Button to={`${pathname}/add`}>Add User</Button>
       </div>
       <Table>
@@ -44,6 +70,7 @@ const UserManage = () => {
             <th>Email</th>
             <th>Avatar</th>
             <th>Status</th>
+            <th>Role</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -52,21 +79,22 @@ const UserManage = () => {
             userList.length > 0 &&
             userList.map((user) => (
               <tr key={user.id}>
-                <td>{user.id.slice(0, 10) + '...'}</td>
+                <td title={user.id}>{shortName(user.id, 10)}</td>
                 <td>{user.username}</td>
-                <td>
-                  <span className='italic text-gray-500'>{user.email}</span>
+                <td title={user.email}>
+                  <span className='italic text-gray-500'>
+                    {shortName(user.email, 12)}
+                  </span>
                 </td>
                 <td>
                   <img
-                    src='/src/assets/doraemon.jpg'
+                    src={user?.avatar || defaultImg}
                     className='w-8 h-8 object-cover rounded-full'
                     alt={user.name}
                   />
                 </td>
-                <td>
-                  <LabelStatus type='success'>Active</LabelStatus>
-                </td>
+                <td>{renderLabelStatus(user.status)}</td>
+                <td>{user?.role}</td>
                 <td>
                   <div className='flex gap-5 text-gray-400'>
                     <Update

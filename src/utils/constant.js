@@ -1,4 +1,3 @@
-
 export const theme = {
   primary: '#2ebac1',
   grayDark: '#292D32',
@@ -26,3 +25,14 @@ export const metadata = {
 
 export const ITEM_PER_PAGE = 2;
 
+export const UserProps = {
+  ACTIVE: 'Active',
+  PENDING: 'Pending',
+  BANNER: 'Banner',
+};
+
+export const roleUser = {
+  ADMIN: 'Admin',
+  USER: 'User',
+  BLOGGER: 'Blogger',
+};

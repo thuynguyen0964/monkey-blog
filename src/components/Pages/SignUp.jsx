@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase/config';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -17,6 +17,7 @@ import {
   ShowPass,
 } from '../import';
 import { FormStyles } from '../../styles/formStyles';
+import { UserProps, roleUser } from '../../utils/constant';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const SignUp = () => {
 
       await updateProfile(auth.currentUser, {
         displayName: values.username,
+        photoURL: 'https://bom.so/8geV31',
       });
 
       const userRef = collection(db, 'users');
@@ -44,6 +46,10 @@ const SignUp = () => {
         username: values.username,
         email: values.email,
         password: values.password,
+        avatar: 'https://bom.so/8geV31',
+        status: UserProps.ACTIVE,
+        role: roleUser.USER,
+        createdAt: serverTimestamp(),
       });
 
       toast.success('Create accounts success!!');

@@ -32,7 +32,7 @@ const DashboardHeader = () => {
       </Button>
       <div className='header-avatar'>
         <Link to={`profile/${accounts?.displayName}`}>
-          <img src={avatar} alt={accounts?.displayName} />
+          <img src={accounts?.photoURL || avatar} alt={accounts?.displayName} />
         </Link>
       </div>
     </DashboardHeaderStyles>
