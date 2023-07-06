@@ -69,8 +69,6 @@ const HeaderStyles = styled.header`
 const Header = () => {
   const { accounts } = useAuthCtx();
   const { control } = useForm();
-
-  console.log(accounts);
   return (
     <HeaderStyles>
       <div className='container'>
