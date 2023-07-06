@@ -14,28 +14,30 @@ import UserManage from '../../module/User/UserManage';
 import CategoryUpdate from '../../module/Category/CategoryUpdate';
 import CategoryAddNew from '../../module/Category/CategoryAddNews';
 import UserAddNew from '../../module/User/UserAddNew';
+import UserUpdate from '../../module/User/UserUpdate';
 
 const Routing = () => {
   return (
     <Routes>
-      <Route path='/' element={<Home />}></Route>
-      <Route path='signup' element={<SignUp />}></Route>
-      <Route path='signin' element={<SignIn />}></Route>
-      <Route path='*' element={<NotFound />}></Route>
-      <Route path='details/:slug' element={<PostDetails />}></Route>
-      <Route path='profile/:user' element={<Profile />}></Route>
+      <Route path='/' element={<Home />} />
+      <Route path='signup' element={<SignUp />} />
+      <Route path='signin' element={<SignIn />} />
+      <Route path='*' element={<NotFound />} />
+      <Route path='details/:slug' element={<PostDetails />} />
+      <Route path='profile/:user' element={<Profile />} />
 
       <Route element={<DashboardLayout />}>
-        <Route path='dashboard' element={<Dashboard />}></Route>
-        <Route path='manage/post' element={<PostManage />}></Route>
-        <Route path='manage/add' element={<PostAddNew />}></Route>
+        <Route path='dashboard' element={<Dashboard />} />
+        <Route path='manage/post' element={<PostManage />} />
+        <Route path='manage/add' element={<PostAddNew />} />
 
-        <Route path='manage/category' element={<CategoryManage />}></Route>
-        <Route path='manage/category/add' element={<CategoryAddNew />}></Route>
+        <Route path='manage/category' element={<CategoryManage />} />
+        <Route path='manage/category/add' element={<CategoryAddNew />} />
         <Route path='manage/category/change' element={<CategoryUpdate />} />
 
-        <Route path='manage/user' element={<UserManage />}></Route>
-        <Route path='manage/user/add' element={<UserAddNew />}></Route>
+        <Route path='manage/user' element={<UserManage />} />
+        <Route path='manage/user/add' element={<UserAddNew />} />
+        <Route path='manage/user/change' element={<UserUpdate />} />
       </Route>
     </Routes>
   );

@@ -119,7 +119,7 @@ const UserManage = () => {
                   <div className='flex gap-5 text-gray-400'>
                     <Update
                       onClick={() =>
-                        handleChangeURL(`/profile/${user.username}`)
+                        handleChangeURL(`${pathname}/change?id=${user.id}`)
                       }
                     />
                     <Remover onClick={() => handleDeleteUser(user)} />
