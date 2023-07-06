@@ -43,8 +43,8 @@ function useImages(setValue, getValues) {
             break;
         }
       },
-      () => {
-        toast.error('Something is broken');
+      (error) => {
+        toast.error(error.message);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((path) => {
@@ -56,9 +56,7 @@ function useImages(setValue, getValues) {
 
   const onSelectImages = (e) => {
     const image = e.target.files[0];
-    if (!image) {
-      toast.warn('Please select a file');
-    }
+    if (!image) return;
     handleUploadImages(image);
     setValue('images', image.name);
   };
