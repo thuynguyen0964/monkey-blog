@@ -3,7 +3,7 @@ import Input from './Input';
 import { EyeClose, EyeIcon } from '../Icon';
 
 // eslint-disable-next-line react/prop-types
-const ShowPass = ({ control }) => {
+const ShowPass = ({ control, className }) => {
   const [showPass, setShowPass] = useState(false);
   return (
     <React.Fragment>
@@ -12,6 +12,7 @@ const ShowPass = ({ control }) => {
         name='password'
         placeholder='Enter your password...'
         control={control}
+        className={className}
       >
         {showPass ? (
           <EyeIcon className='eye' onClick={() => setShowPass(false)}></EyeIcon>

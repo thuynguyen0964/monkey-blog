@@ -6,26 +6,69 @@ import {
   Radio,
   Button,
   toast,
+  ShowPass,
 } from '../../components/import';
 import ImagesUpload from '../../components/upload/ImagesUpload';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { useForm } from 'react-hook-form';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { UserProps, roleUser } from '../../utils/constant';
 import { useImages } from '../../hooks/useImages';
+import { auth, db } from '../../firebase/config';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const UserAddNew = () => {
-  const { control, handleSubmit, watch, setValue, getValues } = useForm();
-
-  const handleCreateUsers = (values) => {
-    console.log(values);
-    toast.success('Creater user successfully');
-  };
-
-  const { handleDeleteImg, imageUpload, onSelectImages } = useImages(
+  const {
+    control,
+    handleSubmit,
+    watch,
     setValue,
-    getValues
-  );
+    getValues,
+    formState: { isSubmitting },
+    reset,
+  } = useForm({
+    defaultValues: {
+      status: UserProps.PENDING,
+      role: roleUser.USER,
+    },
+  });
+
+  const { handleDeleteImg, imageUpload, onSelectImages, setImageUpload } =
+    useImages(setValue, getValues);
+
+  // create users
+  const handleCreateUsers = async (values) => {
+    try {
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+
+      await updateProfile(auth.currentUser, {
+        displayName: values.username,
+        photoURL: imageUpload.imagePath,
+      });
+
+      await addDoc(collection(db, 'users'), {
+        ...values,
+        username: values.username,
+        avatar: imageUpload.imagePath,
+        status: values.status,
+        role: values.role,
+        createdAt: serverTimestamp(),
+      });
+
+      toast.success('Creater user successfully');
+      reset({
+        email: '',
+        password: '',
+        username: '',
+        avatar: '',
+        status: UserProps.PENDING,
+        role: roleUser.USER,
+      });
+      setImageUpload({ ...imageUpload, imagePath: '' });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const watchStatus = watch('status');
   const watchRoles = watch('role');
@@ -45,14 +88,8 @@ const UserAddNew = () => {
               ></Input>
             </Field>
             <Field>
-              <Label>Password</Label>
-              <Input
-                className='max-w-[500px]'
-                name='password'
-                placeholder='Enter your password'
-                control={control}
-                type='password'
-              ></Input>
+              <Label htmlFor='password'>Password</Label>
+              <ShowPass control={control} className='max-w-[500px]'></ShowPass>
             </Field>
           </FieldCheck>
         </div>
@@ -63,15 +100,15 @@ const UserAddNew = () => {
               <Label>Username</Label>
               <Input
                 className='max-w-[500px]'
-                name='fullname'
-                placeholder='Enter your fullname'
+                name='username'
+                placeholder='Enter your username'
                 control={control}
               ></Input>
             </Field>
             <Field className='flex-1'>
               <Label>Avatar</Label>
               <ImagesUpload
-                name='avatar'
+                name='images'
                 handleDeleteImg={handleDeleteImg}
                 onChange={onSelectImages}
                 progress={imageUpload.progressBar}
@@ -143,7 +180,19 @@ const UserAddNew = () => {
             </Field>
           </FieldCheck>
         </div>
-        <Button className='mx-auto w-[200px] mt-10'>Add user</Button>
+
+        <div className='mt-10 flex items-center justify-center gap-3'>
+          <Button to='/manage/user' className='w-[150px] !bg-green-400'>
+            Back
+          </Button>
+          <Button
+            isLoading={isSubmitting}
+            disabled={isSubmitting}
+            className='w-[150px]'
+          >
+            Add user
+          </Button>
+        </div>
       </form>
     </div>
   );

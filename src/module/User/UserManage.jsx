@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { Button, LabelStatus, Table } from '../../components/import';
 import { Remover, Update } from '../../components/action';
 import defaultImg from '/src/assets/doraemon.jpg';
 import { UserProps } from '../../utils/constant';
+import swal from 'sweetalert';
 
 const UserManage = () => {
   const { pathname } = useLocation();
@@ -50,6 +51,25 @@ const UserManage = () => {
         break;
     }
   };
+
+  // delete users
+  const handleDeleteUser = async (user) => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await deleteDoc(doc(db, 'users', user.id));
+        swal('Remove user successsfully!!', {
+          icon: 'success',
+        });
+      }
+    });
+  };
+
   return (
     <>
       <div className='flex justify-between items-start gap-3'>
@@ -102,7 +122,7 @@ const UserManage = () => {
                         handleChangeURL(`/profile/${user.username}`)
                       }
                     />
-                    <Remover />
+                    <Remover onClick={() => handleDeleteUser(user)} />
                   </div>
                 </td>
               </tr>
