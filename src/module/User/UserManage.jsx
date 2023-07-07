@@ -6,7 +6,7 @@ import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { Button, LabelStatus, Table } from '../../components/import';
 import { Remover, Update } from '../../components/action';
 import defaultImg from '/src/assets/doraemon.jpg';
-import { UserProps } from '../../utils/constant';
+import { UserProps, roleUser } from '../../utils/constant';
 import swal from 'sweetalert';
 
 const UserManage = () => {
@@ -118,11 +118,15 @@ const UserManage = () => {
                 <td>
                   <div className='flex gap-5 text-gray-400'>
                     <Update
+                      disabled={user?.role === roleUser.ADMIN}
                       onClick={() =>
                         handleChangeURL(`${pathname}/change?id=${user.id}`)
                       }
                     />
-                    <Remover onClick={() => handleDeleteUser(user)} />
+                    <Remover
+                      disabled={user?.role === roleUser.ADMIN}
+                      onClick={() => handleDeleteUser(user)}
+                    />
                   </div>
                 </td>
               </tr>
