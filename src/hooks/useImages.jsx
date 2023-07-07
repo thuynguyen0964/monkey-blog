@@ -36,12 +36,6 @@ function useImages(setValue, getValues) {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImageUpload({ ...imageUpload, progressBar: progress });
-        switch (snapshot.state) {
-          case 'paused':
-            break;
-          case 'running':
-            break;
-        }
       },
       (error) => {
         toast.error(error.message);

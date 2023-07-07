@@ -1,31 +1,52 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
-import { Button, LabelStatus, Table } from '../../components/import';
+import { Button, LabelStatus, Table, toast } from '../../components/import';
 import { Remover, Update } from '../../components/action';
 import defaultImg from '/src/assets/doraemon.jpg';
 import { UserProps, roleUser } from '../../utils/constant';
 import swal from 'sweetalert';
+import { debounce } from 'lodash';
 
 const UserManage = () => {
   const { pathname } = useLocation();
   const [userList, setUserList] = useState([]);
+  const [filterValue, setFilterValues] = useState('');
 
   const navigate = useNavigate();
   const handleChangeURL = (path) => {
     navigate(path);
   };
 
+  const handleFilter = debounce((e) => {
+    setFilterValues(e.target.value);
+  }, 1000);
+
   const getUserInDB = async () => {
     const colRef = collection(db, 'users');
-    onSnapshot(colRef, (snapshot) => {
+    const colRefFilted = filterValue
+      ? query(
+          colRef,
+          where('email', '>=', filterValue),
+          where('email', '<=', filterValue + 'utf8')
+        )
+      : query(colRef);
+    onSnapshot(colRefFilted, (snapshot) => {
       let users = [];
       snapshot.forEach((doc) => {
         users.push({ id: doc.id, ...doc.data() });
       });
       setUserList(users);
+      filterValue && toast.success(`${users.length} userd was found`);
     });
   };
 
@@ -37,7 +58,7 @@ const UserManage = () => {
 
   useEffect(() => {
     getUserInDB();
-  }, []);
+  }, [filterValue]);
 
   const renderLabelStatus = (status) => {
     switch (status) {
@@ -78,7 +99,8 @@ const UserManage = () => {
           type='text'
           className='input-global ml-auto'
           defaultValue=''
-          placeholder='Enter to search...'
+          placeholder='Enter email to search...'
+          onChange={handleFilter}
         />
         <Button to={`${pathname}/add`}>Add User</Button>
       </div>
