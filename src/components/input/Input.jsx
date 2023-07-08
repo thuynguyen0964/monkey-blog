@@ -29,6 +29,7 @@ const Input = ({
   control,
   children,
   className,
+  read,
   ...props
 }) => {
   const { field } = useController({
@@ -40,8 +41,9 @@ const Input = ({
   return (
     <InputStyles hasIcon={children ? true : false}>
       <input
-        className={`input ${className}`}
+        className={`input ${className} read-only:cursor-not-allowed`}
         id={name}
+        readOnly={read}
         placeholder={placeholder}
         {...field}
         {...props}
@@ -57,6 +59,7 @@ Input.propTypes = {
   hasIcon: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.string,
+  read: PropTypes.bool,
 };
 
 export default Input;

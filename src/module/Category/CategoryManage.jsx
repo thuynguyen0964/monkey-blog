@@ -117,7 +117,6 @@ const CategoryManage = () => {
         <input
           type='text'
           className='ml-auto input-global'
-          defaultValue=''
           onChange={handleFilter}
           placeholder='Enter to search...'
         />

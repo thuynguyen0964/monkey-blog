@@ -22,7 +22,7 @@ import { debounce } from 'lodash';
 import { shortValue } from '../User/UserManage';
 import avatar from '/src/assets/doraemon.jpg';
 import { ITEM_PER_PAGE } from '../../utils/constant';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 
 const PostManage = () => {
@@ -30,6 +30,7 @@ const PostManage = () => {
   const [filterValue, setFilterValues] = useState('');
   const [total, setTotal] = useState(0);
   const [lastDoc, setLastDoc] = useState({});
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
   const handleChangeURL = (path) => {
@@ -126,7 +127,6 @@ const PostManage = () => {
           <div className='w-full mr-5 max-w-[300px]'>
             <input
               type='text'
-              defaultValue=''
               onChange={handleSearchPost}
               className='w-full p-3 border border-gray-300 border-solid rounded-lg bg-slate-100 focus:bg-white'
               placeholder='Enter name to search...'
@@ -150,16 +150,22 @@ const PostManage = () => {
             postList.map((post, index) => (
               <tr key={post.id}>
                 <td>{index + 1}</td>
-                <td>{shortValue(post?.id, 8)}</td>
+                <td data-tooltip-id='action' data-tooltip-content={post.id}>
+                  {shortValue(post?.id, 8)}
+                </td>
                 <td>
                   <div className='flex items-center gap-x-3'>
                     <img
-                      src={post.imageStore}
-                      alt={post.title}
+                      src={post.imageStore || avatar}
+                      alt={post.author}
                       className='w-[66px] h-[55px] rounded object-cover'
                     />
                     <div className='flex-1'>
-                      <h3 className='font-semibold'>
+                      <h3
+                        data-tooltip-id='action'
+                        data-tooltip-content={post.title}
+                        className='font-semibold'
+                      >
                         {shortValue(post.title, 12)}
                       </h3>
                       <time className='text-sm text-gray-500'>
@@ -189,7 +195,13 @@ const PostManage = () => {
                       content='View'
                       onClick={() => handleChangeURL(`/details/${post.slug}`)}
                     />
-                    <Update id='action' content='Update' />
+                    <Update
+                      id='action'
+                      content='Update'
+                      onClick={() =>
+                        handleChangeURL(`${pathname}/change?id=${post.id}`)
+                      }
+                    />
                     <Remover
                       id='action'
                       content='Remove'

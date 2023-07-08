@@ -134,7 +134,6 @@ const UserManage = () => {
         <input
           type='text'
           className='ml-auto input-global'
-          defaultValue=''
           placeholder='Enter email to search...'
           onChange={handleFilter}
         />

@@ -143,9 +143,10 @@ const PostAddNew = () => {
           <Field>
             <Label>Slug</Label>
             <Input
+              read
               className='max-w-[500px]'
               control={control}
-              placeholder='Enter your slug'
+              placeholder='Your slug will auto follow your title'
               name='slug'
             ></Input>
           </Field>
