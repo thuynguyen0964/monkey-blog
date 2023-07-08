@@ -66,7 +66,7 @@ function useImages(setValue, getValues) {
         setImageUpload({ ...imageUpload, imagePath: '' });
       })
       .catch((error) => {
-        toast.error(error);
+        toast.error(error.message);
       });
   };
 

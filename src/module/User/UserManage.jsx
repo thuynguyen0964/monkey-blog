@@ -4,8 +4,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
+  limit,
   onSnapshot,
   query,
+  startAfter,
   where,
 } from 'firebase/firestore';
 import { db } from '../../firebase/config';
@@ -13,7 +16,7 @@ import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { Button, LabelStatus, Table, toast } from '../../components/import';
 import { Remover, Update } from '../../components/action';
 import defaultImg from '/src/assets/doraemon.jpg';
-import { UserProps, roleUser } from '../../utils/constant';
+import { ITEM_PER_PAGE, UserProps, roleUser } from '../../utils/constant';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
 
@@ -21,6 +24,8 @@ const UserManage = () => {
   const { pathname } = useLocation();
   const [userList, setUserList] = useState([]);
   const [filterValue, setFilterValues] = useState('');
+  const [lastUser, setLastUser] = useState({});
+  const [totalUser, setTotalUser] = useState(0);
 
   const navigate = useNavigate();
   const handleChangeURL = (path) => {
@@ -39,7 +44,17 @@ const UserManage = () => {
           where('email', '>=', filterValue),
           where('email', '<=', filterValue + 'utf8')
         )
-      : query(colRef);
+      : query(colRef, limit(ITEM_PER_PAGE));
+
+    onSnapshot(colRef, (snapshot) => {
+      setTotalUser(snapshot.size);
+    });
+
+    // get the last user until call api
+    const document = await getDocs(colRefFilted);
+    const lastDoc = document.docs[document.docs.length - 1];
+    setLastUser(lastDoc);
+
     onSnapshot(colRefFilted, (snapshot) => {
       let users = [];
       snapshot.forEach((doc) => {
@@ -54,6 +69,26 @@ const UserManage = () => {
     if (typeof string !== 'string' || typeof index !== 'number') return;
     const newString = string.slice(0, index) + '...';
     return newString;
+  };
+
+  const handleLoadMore = async () => {
+    const nextRef = query(
+      collection(db, 'users'),
+      startAfter(lastUser || 0),
+      limit(ITEM_PER_PAGE)
+    );
+
+    onSnapshot(nextRef, (snapshot) => {
+      let users = [];
+      snapshot.forEach((doc) => {
+        users.push({ id: doc.id, ...doc.data() });
+      });
+      setUserList([...users, ...userList]);
+    });
+
+    const document = await getDocs(nextRef);
+    const lastDoc = document.docs[document.docs.length - 1];
+    setLastUser(lastDoc);
   };
 
   useEffect(() => {
@@ -155,6 +190,16 @@ const UserManage = () => {
             ))}
         </tbody>
       </Table>
+
+      <div className='mt-8'>
+        <Button
+          disabled={userList.length === totalUser}
+          onClick={handleLoadMore}
+          className='mx-auto'
+        >
+          Load More
+        </Button>
+      </div>
     </>
   );
 };

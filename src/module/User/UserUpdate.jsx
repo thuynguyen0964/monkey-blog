@@ -31,7 +31,7 @@ const UserUpdate = () => {
     watch,
   } = useForm();
 
-  const { handleDeleteImg, imageUpload, onSelectImages, setImageUpload } =
+  const { imageUpload, onSelectImages, setImageUpload, handleDeleteImg } =
     useImages(setValue, getValues);
 
   const colRef = doc(db, 'users', userId);
