@@ -1,11 +1,117 @@
 import Table from '../../components/Table/Table';
 import { useEffect } from 'react';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
-import { Button } from '../../components/Button';
+import { Button, toast } from '../../components/import';
 import { Remover, Update, Views } from '../../components/action';
 import { Tooltip } from 'react-tooltip';
+import { useState } from 'react';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  onSnapshot,
+  query,
+  startAfter,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../firebase/config';
+import { fomatDate } from './PostFeature';
+import { debounce } from 'lodash';
+import { shortValue } from '../User/UserManage';
+import avatar from '/src/assets/doraemon.jpg';
+import { ITEM_PER_PAGE } from '../../utils/constant';
+import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 
 const PostManage = () => {
+  const [postList, setPostList] = useState([]);
+  const [filterValue, setFilterValues] = useState('');
+  const [total, setTotal] = useState(0);
+  const [lastDoc, setLastDoc] = useState({});
+
+  const navigate = useNavigate();
+  const handleChangeURL = (path) => {
+    navigate(path);
+  };
+
+  const handleSearchPost = debounce((e) => {
+    setFilterValues(e.target.value);
+  }, 1000);
+
+  const getPostInDB = async () => {
+    const colRef = collection(db, 'posts');
+    const newColRef = filterValue
+      ? query(
+          colRef,
+          where('slug', '>=', filterValue),
+          where('slug', '<=', filterValue + 'utf8')
+        )
+      : query(colRef, limit(ITEM_PER_PAGE));
+    onSnapshot(colRef, (snapshot) => {
+      setTotal(snapshot.size);
+    });
+
+    // get the document -> get the last item of document
+    const document = await getDocs(newColRef);
+    const lastDoc = document.docs[document.docs.length - 1];
+
+    onSnapshot(newColRef, (snapshot) => {
+      const results = [];
+      snapshot.forEach((doc) => {
+        results.push({ id: doc.id, ...doc.data() });
+      });
+      setPostList(results);
+      filterValue.length > 0 &&
+        toast.success(`${results.length} posts was found`);
+    });
+
+    // set the last item of document
+    setLastDoc(lastDoc);
+  };
+
+  useEffect(() => {
+    getPostInDB();
+  }, [filterValue]);
+
+  const handleLoadMore = async () => {
+    const nextRef = query(
+      collection(db, 'posts'),
+      startAfter(lastDoc || 0),
+      limit(ITEM_PER_PAGE)
+    );
+
+    onSnapshot(nextRef, (snapshot) => {
+      const results = [];
+      snapshot.forEach((doc) => {
+        results.push({ id: doc.id, ...doc.data() });
+      });
+      setPostList([...postList, ...results]);
+    });
+    const documents = await getDocs(nextRef);
+    const lastDocItem = documents.docs[documents.docs.length - 1];
+    setLastDoc(lastDocItem);
+  };
+
+  const handleDeletePost = (id) => {
+    const singleDoc = doc(db, 'posts', id);
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await deleteDoc(singleDoc);
+        swal('Remove post successsfully!!', {
+          icon: 'success',
+        });
+      }
+    });
+  };
+
   useEffect(() => {
     document.title = 'Manage Post';
   }, []);
@@ -20,8 +126,10 @@ const PostManage = () => {
           <div className='w-full mr-5 max-w-[300px]'>
             <input
               type='text'
+              defaultValue=''
+              onChange={handleSearchPost}
               className='w-full p-3 border border-gray-300 border-solid rounded-lg bg-slate-100 focus:bg-white'
-              placeholder='Search post...'
+              placeholder='Enter name to search...'
             />
           </div>
         </div>
@@ -29,7 +137,7 @@ const PostManage = () => {
       <Table>
         <thead>
           <tr>
-            <th></th>
+            <th>#</th>
             <th>Id</th>
             <th>Post</th>
             <th>Category</th>
@@ -38,43 +146,69 @@ const PostManage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td>01</td>
-            <td>
-              <div className='flex items-center gap-x-3'>
-                <img
-                  src='https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80'
-                  alt=''
-                  className='w-[66px] h-[55px] rounded object-cover'
-                />
-                <div className='flex-1'>
-                  <h3 className='font-semibold'>One Special 4K Camera</h3>
-                  <time className='text-sm text-gray-500'>
-                    Date: 25 Oct 2021
-                  </time>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span className='text-gray-500'>Camera Gear</span>
-            </td>
-            <td>
-              <span className='text-gray-500'>Evondev</span>
-            </td>
-            <td>
-              {/* Icon action */}
-              <div className='flex gap-5 text-gray-400'>
-                <Views id='action' content='View' />
-                <Update id='action' content='Update' />
-                <Remover id='action' content='Remove' />
-              </div>
-            </td>
-          </tr>
+          {postList.length > 0 &&
+            postList.map((post, index) => (
+              <tr key={post.id}>
+                <td>{index + 1}</td>
+                <td>{shortValue(post?.id, 8)}</td>
+                <td>
+                  <div className='flex items-center gap-x-3'>
+                    <img
+                      src={post.imageStore}
+                      alt={post.title}
+                      className='w-[66px] h-[55px] rounded object-cover'
+                    />
+                    <div className='flex-1'>
+                      <h3 className='font-semibold'>
+                        {shortValue(post.title, 12)}
+                      </h3>
+                      <time className='text-sm text-gray-500'>
+                        {fomatDate(post.createAt)}
+                      </time>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span className='text-gray-500'>{post?.category?.name}</span>
+                </td>
+                <td>
+                  <div className='flex items-center gap-2'>
+                    <img
+                      src={post?.user?.avatar || avatar}
+                      className='w-10 h-10 rounded-full object-cover'
+                      alt={post.author}
+                    />
+                    <span className='text-gray-500'>{post?.author}</span>
+                  </div>
+                </td>
+                <td>
+                  {/* Icon action */}
+                  <div className='flex gap-5 text-gray-400'>
+                    <Views
+                      id='action'
+                      content='View'
+                      onClick={() => handleChangeURL(`/details/${post.slug}`)}
+                    />
+                    <Update id='action' content='Update' />
+                    <Remover
+                      id='action'
+                      content='Remove'
+                      onClick={() => handleDeletePost(post.id)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
       <div className='mt-10'>
-        <Button className='mx-auto'>Load More</Button>
+        <Button
+          onClick={handleLoadMore}
+          disabled={postList.length === total}
+          className='mx-auto'
+        >
+          Load More
+        </Button>
       </div>
       <Tooltip id='action' render={({ content }) => <span>{content}</span>} />
     </>

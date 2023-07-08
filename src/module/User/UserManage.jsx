@@ -21,6 +21,12 @@ import swal from 'sweetalert';
 import { debounce } from 'lodash';
 import { Tooltip } from 'react-tooltip';
 
+export const shortValue = (string, index) => {
+  if (typeof string !== 'string' || typeof index !== 'number') return;
+  const newString = string.slice(0, index) + '...';
+  return newString;
+};
+
 const UserManage = () => {
   const { pathname } = useLocation();
   const [userList, setUserList] = useState([]);
@@ -64,12 +70,6 @@ const UserManage = () => {
       setUserList(users);
       filterValue && toast.success(`${users.length} userd was found`);
     });
-  };
-
-  const shortName = (string, index) => {
-    if (typeof string !== 'string' || typeof index !== 'number') return;
-    const newString = string.slice(0, index) + '...';
-    return newString;
   };
 
   const handleLoadMore = async () => {
@@ -157,11 +157,13 @@ const UserManage = () => {
             userList.length > 0 &&
             userList.map((user) => (
               <tr key={user.id}>
-                <td title={user.id}>{shortName(user.id, 10)}</td>
+                <td data-tooltip-id='action' data-tooltip-content={user.id}>
+                  {shortValue(user.id, 10)}
+                </td>
                 <td>{user.username}</td>
-                <td title={user.email}>
+                <td data-tooltip-id='action' data-tooltip-content={user.email}>
                   <span className='italic text-gray-500'>
-                    {shortName(user.email, 12)}
+                    {shortValue(user.email, 12)}
                   </span>
                 </td>
                 <td>

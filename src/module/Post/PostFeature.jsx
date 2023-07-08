@@ -49,17 +49,17 @@ const PostFeatureItemStyles = styled.div`
     }
   }
 `;
+const fomatDate = (time) => {
+  if (typeof time === 'undefined') return;
+  const date = new Date(time?.seconds) * 1000;
+  const results = new Date(date).toLocaleDateString('vi-VI');
+  return results;
+};
+const now = '2/7/2023';
+
 const PostFeature = ({ post }) => {
   if (!post) return null;
   const { title, author, category, createAt, imageStore, slug } = post;
-
-  const fomatDate = (time) => {
-    if (typeof time === 'undefined') return;
-    const date = new Date(time?.seconds) * 1000;
-    const results = new Date(date).toLocaleDateString('vi-VI');
-    return results;
-  };
-  const now = '2/7/2023';
 
   return (
     <PostFeatureItemStyles>
@@ -84,5 +84,5 @@ const PostFeature = ({ post }) => {
 PostFeature.propTypes = {
   post: PropTypes.object,
 };
-
+export { fomatDate };
 export default PostFeature;
