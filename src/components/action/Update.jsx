@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 
-const Update = ({ onClick, disabled }) => {
+const Update = ({ onClick, disabled, id, content }) => {
   return (
     <button
+      data-tooltip-id={id}
+      data-tooltip-content={content}
       className={`flex items-center text-black justify-center w-10 h-10 border border-gray-200 rounded cursor-pointer ${
         disabled &&
         'disabled:bg-red-300 disabled:text-white disabled:cursor-not-allowed'
@@ -31,6 +33,8 @@ const Update = ({ onClick, disabled }) => {
 Update.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  id: PropTypes.string,
+  content: PropTypes.string,
 };
 
 export default Update;

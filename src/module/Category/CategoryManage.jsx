@@ -18,6 +18,7 @@ import { db } from '../../firebase/config';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
 import { ITEM_PER_PAGE } from '../../utils/constant';
+import { Tooltip } from 'react-tooltip';
 
 const CategoryManage = () => {
   const { pathname } = useLocation();
@@ -111,11 +112,11 @@ const CategoryManage = () => {
 
   return (
     <>
-      <div className='flex justify-between items-start gap-3'>
+      <div className='flex items-start justify-between gap-3'>
         <DashboardHeading title='Categories' desc='Manage your category' />
         <input
           type='text'
-          className='input-global ml-auto'
+          className='ml-auto input-global'
           defaultValue=''
           onChange={handleFilter}
           placeholder='Enter to search...'
@@ -147,13 +148,19 @@ const CategoryManage = () => {
                 </td>
                 <td>
                   <div className='flex gap-5 text-gray-400'>
-                    <Views></Views>
+                    <Views id='action' content='Details' />
                     <Update
+                      id='action'
+                      content='Update'
                       onClick={() =>
                         handleChangePages('change', category.id, category.name)
                       }
                     />
-                    <Remover onClick={() => handleDelCategories(category.id)} />
+                    <Remover
+                      id='action'
+                      content='Remove'
+                      onClick={() => handleDelCategories(category.id)}
+                    />
                   </div>
                 </td>
               </tr>
@@ -170,6 +177,7 @@ const CategoryManage = () => {
           Load More
         </Button>
       </div>
+      <Tooltip id='action' render={({ content }) => <span>{content}</span>} />
     </>
   );
 };

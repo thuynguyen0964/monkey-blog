@@ -18,9 +18,12 @@ import Toggle from '../../components/toogle/Toggle';
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
+  where,
 } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuthCtx } from '../../context/AuthContext';
@@ -35,6 +38,21 @@ const PostAddNew = () => {
   const [categoriesType, setCategoriesType] = useState([]);
   const [categoryTitle, setCategoryTitle] = useState('');
 
+  const getSingleUserData = async () => {
+    const q = query(
+      collection(db, 'users'),
+      where('email', '==', accounts?.email)
+    );
+    const userDocs = await getDocs(q);
+    userDocs.forEach((doc) => {
+      setValue('user', { id: doc.id, ...doc.data() });
+    });
+  };
+
+  useEffect(() => {
+    getSingleUserData();
+  }, [accounts?.email]);
+
   const {
     control,
     watch,
@@ -48,7 +66,8 @@ const PostAddNew = () => {
       title: '',
       slug: '',
       status: postStatus.PENDING,
-      category: '',
+      category: {},
+      user: {},
       hot: false,
     },
   });
@@ -76,15 +95,18 @@ const PostAddNew = () => {
       title: '',
       slug: '',
       status: postStatus.PENDING,
-      category: '',
+      category: {},
+      user: {},
       hot: false,
     });
     setCategoryTitle(null);
     setImageUpload({ ...imageUpload, imagePath: '' });
   };
 
-  const handleGetOption = (type) => {
-    setValue('category', type?.name);
+  const handleGetOption = async (type) => {
+    const colRef = doc(db, 'categories', type?.id);
+    const docData = await getDoc(colRef);
+    setValue('category', { id: docData.id, ...docData.data() });
     setCategoryTitle(type?.name);
   };
 

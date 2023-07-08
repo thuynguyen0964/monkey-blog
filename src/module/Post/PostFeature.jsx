@@ -59,7 +59,7 @@ const PostFeature = ({ post }) => {
     const results = new Date(date).toLocaleDateString('vi-VI');
     return results;
   };
-  const now = new Date(Date.now()).toLocaleDateString('vi-VI');
+  const now = '2/7/2023';
 
   return (
     <PostFeatureItemStyles>
@@ -67,7 +67,7 @@ const PostFeature = ({ post }) => {
       <div className='post-overlay'></div>
       <div className='post-content'>
         <div className='post-top'>
-          <PostCategory>{category}</PostCategory>
+          <PostCategory>{category?.name}</PostCategory>
           <PostMeta
             author={author}
             date={fomatDate(createAt) || now}

@@ -19,6 +19,7 @@ import defaultImg from '/src/assets/doraemon.jpg';
 import { ITEM_PER_PAGE, UserProps, roleUser } from '../../utils/constant';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
+import { Tooltip } from 'react-tooltip';
 
 const UserManage = () => {
   const { pathname } = useLocation();
@@ -128,11 +129,11 @@ const UserManage = () => {
 
   return (
     <>
-      <div className='flex justify-between items-start gap-3'>
+      <div className='flex items-start justify-between gap-3'>
         <DashboardHeading title='Users' desc='Manage your user' />
         <input
           type='text'
-          className='input-global ml-auto'
+          className='ml-auto input-global'
           defaultValue=''
           placeholder='Enter email to search...'
           onChange={handleFilter}
@@ -166,7 +167,7 @@ const UserManage = () => {
                 <td>
                   <img
                     src={user?.avatar || defaultImg}
-                    className='w-8 h-8 object-cover rounded-full'
+                    className='object-cover w-8 h-8 rounded-full'
                     alt={user.name}
                   />
                 </td>
@@ -175,12 +176,16 @@ const UserManage = () => {
                 <td>
                   <div className='flex gap-5 text-gray-400'>
                     <Update
+                      id='action'
+                      content='Update'
                       disabled={user?.role === roleUser.ADMIN}
                       onClick={() =>
                         handleChangeURL(`${pathname}/change?id=${user.id}`)
                       }
                     />
                     <Remover
+                      id='action'
+                      content='Remove'
                       disabled={user?.role === roleUser.ADMIN}
                       onClick={() => handleDeleteUser(user)}
                     />
@@ -200,6 +205,7 @@ const UserManage = () => {
           Load More
         </Button>
       </div>
+      <Tooltip id='action' render={({ content }) => <span>{content}</span>} />
     </>
   );
 };
