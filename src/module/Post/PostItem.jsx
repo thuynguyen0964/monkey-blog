@@ -35,7 +35,7 @@ const PostItem = ({ post }) => {
       ></PostImage>
       <PostCategory
         type='primary'
-        to={`/category/${post.category?.name}`}
+        to={`/category/${post.category?.slug}`}
         className='mb'
       >
         {post.category?.name}

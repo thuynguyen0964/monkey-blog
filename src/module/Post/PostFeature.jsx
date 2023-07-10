@@ -67,7 +67,7 @@ const PostFeature = ({ post }) => {
       <div className='post-overlay'></div>
       <div className='post-content'>
         <div className='post-top'>
-          <PostCategory to={`/category/${category?.name}`}>
+          <PostCategory to={`/category/${category?.slug}`}>
             {category?.name}
           </PostCategory>
           <PostMeta

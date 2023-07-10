@@ -12,9 +12,9 @@ const Home = () => {
   return (
     <main className='main'>
       <Layout>
-        <Banner></Banner>
-        <HomeFeature></HomeFeature>
-        {/* <HomeNewest></HomeNewest> */}
+        <Banner />
+        <HomeFeature />
+        <HomeNewest />
       </Layout>
     </main>
   );

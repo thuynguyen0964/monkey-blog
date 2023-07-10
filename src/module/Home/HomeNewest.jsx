@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import PostNewestLarge from '../Post/PostNewLarge';
 import PostNewest from '../Post/PostNewest';
-import PostItem from '../Post/PostItem';
 import Heading from '../../components/Layout/Heading';
+import { useEffect, useState } from 'react';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 
 const HomeNewestStyles = styled.div`
   .layout {
@@ -28,24 +30,37 @@ const HomeNewestStyles = styled.div`
 `;
 
 const HomeNewest = () => {
+  const [posts, setPosts] = useState([]);
+
+  const getPostsLastest = async () => {
+    const colRef = query(collection(db, 'posts'), where('large', '==', true));
+    onSnapshot(colRef, (snapShot) => {
+      const newArr = [];
+      snapShot.forEach((doc) => {
+        newArr.push({ id: doc.id, ...doc.data() });
+      });
+
+      setPosts(newArr);
+    });
+  };
+
+  useEffect(() => {
+    getPostsLastest();
+  }, []);
+
   return (
     <HomeNewestStyles className='home-block'>
       <div className='container'>
         <Heading>Mới nhất</Heading>
-        <div className='layout'>
-          <PostNewestLarge></PostNewestLarge>
+        <section className='layout'>
+          {posts.length > 0 &&
+            posts.map((post) => <PostNewestLarge key={post.id} post={post} />)}
           <div className='sidebar'>
             <PostNewest></PostNewest>
             <PostNewest></PostNewest>
             <PostNewest></PostNewest>
           </div>
-        </div>
-        <div className='grid-layout grid-layout--primary'>
-          <PostItem></PostItem>
-          <PostItem></PostItem>
-          <PostItem></PostItem>
-          <PostItem></PostItem>
-        </div>
+        </section>
       </div>
     </HomeNewestStyles>
   );
