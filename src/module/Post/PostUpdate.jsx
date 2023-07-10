@@ -5,6 +5,7 @@ import {
   Field,
   FieldCheck,
   Input,
+  toast,
 } from '../../components/import';
 import { postStatus } from '../../utils/constant';
 import { Dropdown } from '../../components/Dropdown';
@@ -15,20 +16,44 @@ import { useForm } from 'react-hook-form';
 import { useImages } from '../../hooks/useImages';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import Toggle from '../../components/toogle/Toggle';
 import { useSearchParams } from 'react-router-dom';
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const PostUpdate = () => {
   // global variable
   const [params] = useSearchParams();
   const postId = params.get('id');
   const colRef = doc(db, 'posts', postId);
+  const modules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ align: [] }],
+        ['link', 'image'],
+        ['clean'],
+        [{ color: [] }],
+      ],
+    },
+  };
 
   // state
   const [categoriesType, setCategoriesType] = useState([]);
   const [categoryTitle, setCategoryTitle] = useState('');
+  const [content, setContent] = useState('');
 
   // react-hook-form
   const {
@@ -43,22 +68,19 @@ const PostUpdate = () => {
   const watchStatus = watch('status');
   const watchHot = watch('hot', false);
 
-  // handle Update Form
-  const updatePost = (values) => {
-    console.log(values);
-  };
-
   // upload file hooks
   const { handleDeleteImg, imageUpload, onSelectImages, setImageUpload } =
     useImages(setValue, getValues);
 
   // fill data post input
   const getSinglePost = async () => {
+    if (!postId) return;
     const postDocument = await getDoc(colRef);
     const doc = postDocument.data();
     reset(doc);
     setCategoryTitle(doc?.category?.name);
     setImageUpload({ ...imageUpload, imagePath: doc?.imageStore });
+    setContent(doc?.content || 'Content will appear here...');
   };
 
   // get categgory in DB with custom hook
@@ -80,11 +102,21 @@ const PostUpdate = () => {
     setCategoryTitle(type?.name);
   };
 
+  // handle Update Form
+  const updatePost = async (values) => {
+    await updateDoc(colRef, {
+      ...values,
+      content,
+    });
+    toast.success('Change post successfully!!');
+  };
+
   // call function
   useEffect(() => {
     getCategories();
     getSinglePost();
   }, []);
+
   return (
     <section>
       <DashboardHeading title='Update post' desc={`Update post : ${postId}`} />
@@ -180,7 +212,8 @@ const PostUpdate = () => {
               </span>
             )}
           </Field>
-          <Field>
+
+          <Field className='flex-1'>
             <Label>Thumbail</Label>
             <ImagesUpload
               name='images'
@@ -190,6 +223,19 @@ const PostUpdate = () => {
               handleDeleteImg={handleDeleteImg}
             ></ImagesUpload>
           </Field>
+
+          <Field>
+            <Label>Content</Label>
+            <div className='entry-content'>
+              <ReactQuill
+                className='w-[500px]'
+                theme='snow'
+                value={content}
+                onChange={setContent}
+              />
+            </div>
+          </Field>
+
           <Field>
             <Label>Post Feature</Label>
             <Toggle
@@ -198,13 +244,18 @@ const PostUpdate = () => {
             />
           </Field>
         </div>
-        <Button
-          type='submit'
-          disabled={isSubmitting}
-          className='mx-auto disabled:opacity-60'
-        >
-          {isSubmitting ? 'Loading...' : 'Update Post'}
-        </Button>
+        <div className='flex items-center justify-center gap-3'>
+          <Button to='/manage/post' className='!bg-green-400'>
+            Back
+          </Button>
+          <Button
+            type='submit'
+            disabled={isSubmitting}
+            className='disabled:opacity-60'
+          >
+            {isSubmitting ? 'Loading...' : 'Update Post'}
+          </Button>
+        </div>
       </form>
     </section>
   );

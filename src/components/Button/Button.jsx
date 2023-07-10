@@ -28,7 +28,7 @@ const Button = ({
   isLoading = false,
   to,
   onClick,
-  className,
+  className = '',
   ...props
 }) => {
   if (to && typeof to === 'string') {

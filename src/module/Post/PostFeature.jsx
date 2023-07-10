@@ -73,7 +73,7 @@ const PostFeature = ({ post }) => {
             date={fomatDate(createAt) || now}
           ></PostMeta>
         </div>
-        <PostTitle postId={slug} size='large'>
+        <PostTitle slug={slug} size='large'>
           {title}
         </PostTitle>
       </div>

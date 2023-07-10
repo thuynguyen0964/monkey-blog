@@ -25,9 +25,9 @@ const PostTitleaStyles = styled.h3`
     `};
 `;
 
-const PostTitle = ({ children, className, size, postId, ...props }) => {
+const PostTitle = ({ children, className, size, slug, ...props }) => {
   return (
-    <Link to={`/details/${postId}`} className='link'>
+    <Link to={`/details/${slug}`} className='link'>
       <PostTitleaStyles size={size} className={className} {...props}>
         {children}
       </PostTitleaStyles>
@@ -39,7 +39,7 @@ PostTitle.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   size: PropTypes.string,
-  postId: PropTypes.string,
+  slug: PropTypes.string,
 };
 
 export default PostTitle;

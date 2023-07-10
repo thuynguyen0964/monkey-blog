@@ -8,7 +8,6 @@ const PostMetaStyles = styled.div`
   gap: 12px;
   font-size: 14px;
   font-weight: 600;
-  color: white;
   margin-left: auto;
 
   .post-dot {
@@ -44,8 +43,8 @@ const PostMeta = ({ date, author, color, className }) => {
     <PostMetaStyles color={color} className={className}>
       <span className='post-time'>{date}</span>
       <span className='post-dot'></span>
-      <Link to={`profile/${author}`}>
-        <span className='post-author hover:text-blue-500'>{author}</span>
+      <Link to={`/profile/${author}`}>
+        <span className='post-author hover:text-yellow-500'>{author}</span>
       </Link>
     </PostMetaStyles>
   );
