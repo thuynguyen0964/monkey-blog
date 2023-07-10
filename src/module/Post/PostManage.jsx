@@ -180,8 +180,8 @@ const PostManage = () => {
                 <td>
                   <div className='flex items-center gap-2'>
                     <img
-                      src={post?.user?.avatar || avatar}
-                      className='w-10 h-10 rounded-full object-cover'
+                      src={post.user.avatar || avatar}
+                      className='w-10 h-10 object-cover rounded-full'
                       alt={post.author}
                     />
                     <span className='text-gray-500'>{post?.author}</span>

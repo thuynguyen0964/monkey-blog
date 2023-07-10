@@ -3,8 +3,6 @@ import Layout from '../Layout/Layout';
 import PostImage from '../../module/Post/components/PostImage';
 import PostCategory from '../../module/Post/components/PostCategory';
 import PostMeta from '../../module/Post/components/PostMeta';
-import Heading from '../Layout/Heading';
-import PostItem from '../../module/Post/PostItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -12,6 +10,8 @@ import { db } from '../../firebase/config';
 import { toast } from 'react-toastify';
 import { fomatDate } from '../../module/Post/PostFeature';
 import parse from 'html-react-parser';
+import defaultAvatar from '/src/assets/doraemon.jpg';
+import PostRelated from '../../module/Post/PostRelated';
 
 const PostDetailsPageStyles = styled.div`
   padding-bottom: 100px;
@@ -119,7 +119,11 @@ const PostDetails = () => {
 
   useEffect(() => {
     getDetailsPost();
-  }, []);
+  }, [slug]);
+
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [slug]);
 
   useEffect(() => {
     document.title = 'Details Page';
@@ -151,27 +155,22 @@ const PostDetails = () => {
               </div>
               <div className='author'>
                 <div className='author-image'>
-                  <img src={post?.user?.avatar} alt={post.author} />
+                  <img
+                    src={post?.user?.avatar || defaultAvatar}
+                    alt={post.author}
+                  />
                 </div>
                 <div className='author-content'>
                   <h3 className='author-name'>{post?.author}</h3>
                   <p className='author-desc'>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Dignissimos non animi porro voluptates quibusdam optio nulla
-                    quis nihil ipsa error delectus temporibus nesciunt, nam
-                    officiis adipisci suscipit voluptate eum totam!
+                    {post.user?.desc ||
+                      'This user has not uploaded a profile yet'}
                   </p>
                 </div>
               </div>
             </div>
             <div className='post-related'>
-              <Heading>Bài viết liên quan</Heading>
-              <div className='grid-layout grid-layout--primary'>
-                <PostItem></PostItem>
-                <PostItem></PostItem>
-                <PostItem></PostItem>
-                <PostItem></PostItem>
-              </div>
+              <PostRelated categoryId={post?.categoryId || ''} />
             </div>
           </div>
         </div>

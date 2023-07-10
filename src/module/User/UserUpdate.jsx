@@ -9,6 +9,7 @@ import {
   Label,
   Radio,
   ShowPass,
+  Textarea,
   toast,
 } from '../../components/import';
 import { useForm } from 'react-hook-form';
@@ -110,14 +111,13 @@ const UserUpdate = () => {
               </Field>
 
               <Field>
-                <Label>New Password</Label>
-                <Input
+                <Label htmlFor='desc'>Description</Label>
+                <Textarea
                   control={control}
                   className='max-w-[500px]'
-                  name='newpassword'
-                  type='password'
-                  placeholder='Enter your newpassword...'
-                ></Input>
+                  name='desc'
+                  placeholder='Enter your description...'
+                />
               </Field>
             </div>
           </FieldCheck>

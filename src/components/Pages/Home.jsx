@@ -14,7 +14,7 @@ const Home = () => {
       <Layout>
         <Banner></Banner>
         <HomeFeature></HomeFeature>
-        <HomeNewest></HomeNewest>
+        {/* <HomeNewest></HomeNewest> */}
       </Layout>
     </main>
   );

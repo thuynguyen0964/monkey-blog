@@ -10,6 +10,7 @@ import ShowPass from '../input/ShowPass';
 import Checkbox from '../Checkbox/Checkbox';
 import Radio from '../Checkbox/Radio';
 import Table from '../Table/Table';
+import { Textarea } from '../Textarea/Textarea';
 
 export {
   Button,
@@ -27,4 +28,5 @@ export {
   FieldCheck,
   Table,
   LabelStatus,
+  Textarea,
 };

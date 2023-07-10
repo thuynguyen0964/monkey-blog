@@ -175,3 +175,14 @@ h6 {
   font-size: 17px;
   border: 2px solid transparent;
 }
+
+// quill
+.quill {
+  position: relative;
+  .ql-toolbar {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 10;
+  }
+}

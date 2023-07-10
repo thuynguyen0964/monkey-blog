@@ -97,7 +97,7 @@ const Header = () => {
             ></Input>
             {accounts?.email ? (
               <div className='header-auth'>
-                <Link to={`profile/${accounts?.displayName}`}>
+                <Link to={`/profile/${accounts?.displayName}`}>
                   <img
                     src={accounts?.photoURL || avatar}
                     alt='avatar'

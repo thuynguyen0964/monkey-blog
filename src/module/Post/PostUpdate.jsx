@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   Radio,
@@ -14,7 +15,7 @@ import DashboardHeading from '../DashBoard/DashBoardHeading';
 
 import { useForm } from 'react-hook-form';
 import { useImages } from '../../hooks/useImages';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useEffect } from 'react';
 import {
   collection,
@@ -31,24 +32,20 @@ import { useSearchParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ align: [] }],
+  ],
+};
+
 const PostUpdate = () => {
   // global variable
   const [params] = useSearchParams();
   const postId = params.get('id');
   const colRef = doc(db, 'posts', postId);
-  const modules = {
-    toolbar: {
-      container: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        ['bold', 'italic', 'underline'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ align: [] }],
-        ['link', 'image'],
-        ['clean'],
-        [{ color: [] }],
-      ],
-    },
-  };
 
   // state
   const [categoriesType, setCategoriesType] = useState([]);
@@ -228,6 +225,7 @@ const PostUpdate = () => {
             <Label>Content</Label>
             <div className='entry-content'>
               <ReactQuill
+                modules={modules}
                 className='w-[500px]'
                 theme='snow'
                 value={content}

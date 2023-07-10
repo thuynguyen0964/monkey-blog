@@ -3,6 +3,8 @@ import PostCategory from './components/PostCategory';
 import PostTitle from './components/PostTitle';
 import PostMeta from './components/PostMeta';
 import PostImage from './components/PostImage';
+import PropTypes from 'prop-types';
+import { fomatDate } from './PostFeature';
 
 const PostItemStyles = styled.div`
   display: flex;
@@ -23,24 +25,31 @@ const PostItemStyles = styled.div`
   }
 `;
 
-const PostItem = () => {
+const PostItem = ({ post }) => {
   return (
     <PostItemStyles>
       <PostImage
-        to='/details/id'
-        url='https://images.unsplash.com/photo-1570993492881-25240ce854f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2290&q=80'
-        alt='setup'
+        to={`/details/${post.slug}`}
+        url={post.imageStore}
         className='post-image'
       ></PostImage>
       <PostCategory type='primary' className='mb'>
-        Kiến thức
+        {post.category?.name}
       </PostCategory>
-      <PostTitle size='large' className='mb'>
-        Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
+      <PostTitle slug={post.slug} size='large' className='mb'>
+        {post?.title}
       </PostTitle>
-      <PostMeta color='primary' author='Thuy Nguyen' date='June 25'></PostMeta>
+      <PostMeta
+        color='primary'
+        author={post.author}
+        date={fomatDate(post.createAt)}
+      />
     </PostItemStyles>
   );
+};
+
+PostItem.propTypes = {
+  post: PropTypes.object,
 };
 
 export default PostItem;

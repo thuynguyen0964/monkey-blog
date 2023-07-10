@@ -87,7 +87,8 @@ const PostAddNew = () => {
     await addDoc(colRef, {
       ...newValues,
       imageStore: imageUpload.imagePath,
-      userId: accounts?.uid,
+      userId: newValues.user.id,
+      categoryId: newValues.category.id,
       createAt: serverTimestamp(),
     });
     toast.success('Add post sucessfully');
