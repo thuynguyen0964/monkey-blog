@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 const PostCategoryStyles = styled.div`
@@ -25,10 +26,10 @@ const PostCategoryStyles = styled.div`
   }
 `;
 
-const PostCategory = ({ children, type, className, ...props }) => {
+const PostCategory = ({ children, type, className, to, ...props }) => {
   return (
     <PostCategoryStyles type={type} className={className} {...props}>
-      {children}
+      <Link to={to}>{children}</Link>
     </PostCategoryStyles>
   );
 };
@@ -37,6 +38,7 @@ PostCategory.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   type: PropTypes.string,
+  to: PropTypes.string,
 };
 
 export default PostCategory;

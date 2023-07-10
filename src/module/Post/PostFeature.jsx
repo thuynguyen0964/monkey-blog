@@ -67,7 +67,9 @@ const PostFeature = ({ post }) => {
       <div className='post-overlay'></div>
       <div className='post-content'>
         <div className='post-top'>
-          <PostCategory>{category?.name}</PostCategory>
+          <PostCategory to={`/category/${category?.name}`}>
+            {category?.name}
+          </PostCategory>
           <PostMeta
             author={author}
             date={fomatDate(createAt) || now}

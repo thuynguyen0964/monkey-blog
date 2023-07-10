@@ -33,7 +33,11 @@ const PostItem = ({ post }) => {
         url={post.imageStore}
         className='post-image'
       ></PostImage>
-      <PostCategory type='primary' className='mb'>
+      <PostCategory
+        type='primary'
+        to={`/category/${post.category?.name}`}
+        className='mb'
+      >
         {post.category?.name}
       </PostCategory>
       <PostTitle slug={post.slug} size='large' className='mb'>

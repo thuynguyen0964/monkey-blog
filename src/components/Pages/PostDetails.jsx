@@ -139,7 +139,10 @@ const PostDetails = () => {
                 className='post-feature'
               ></PostImage>
               <div className='post-info'>
-                <PostCategory className='mb-6'>
+                <PostCategory
+                  className='mb-6'
+                  to={`/category/${post?.category?.name}`}
+                >
                   {post?.category?.name}
                 </PostCategory>
                 <h1 className='post-heading'>{post?.title}</h1>

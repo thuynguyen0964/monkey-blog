@@ -3,6 +3,7 @@ import Home from '../Pages/Home';
 import SignUp from '../Pages/SignUp';
 import SignIn from '../Pages/SignIn';
 import NotFound from '../Pages/NotFound';
+import CategoryPage from '../Pages/CategoryPage';
 
 import DashboardLayout from '../../module/DashBoard/DashBoardLayout';
 import Dashboard from '../Pages/DashBoard';
@@ -30,6 +31,8 @@ const Routing = () => {
       <Route path='*' element={<NotFound />} />
       <Route path='details/:slug' element={<PostDetails />} />
       <Route path='profile/:user' element={<Profile />} />
+
+      <Route path='category/:name' element={<CategoryPage />} />
 
       <Route element={<DashboardLayout />}>
         <Route path='dashboard' element={<Dashboard />} />
