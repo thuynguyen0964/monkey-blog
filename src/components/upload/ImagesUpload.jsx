@@ -26,7 +26,7 @@ const ImagesUpload = (props) => {
       {!image && (
         <div className='flex flex-col items-center text-center pointer-events-none'>
           <img
-            src={'/src/assets/bg.jpg'}
+            src={'https://bom.so/zGFRGH'}
             alt='preview'
             className='max-w-[100px] mb-5'
           />
