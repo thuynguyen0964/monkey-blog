@@ -31,21 +31,33 @@ const HomeNewestStyles = styled.div`
 
 const HomeNewest = () => {
   const [posts, setPosts] = useState([]);
+  const [postNotTrends, setPostNotTrends] = useState([]);
 
-  const getPostsLastest = async () => {
+  const getPostsLastest = () => {
     const colRef = query(collection(db, 'posts'), where('large', '==', true));
     onSnapshot(colRef, (snapShot) => {
       const newArr = [];
       snapShot.forEach((doc) => {
         newArr.push({ id: doc.id, ...doc.data() });
       });
-
       setPosts(newArr);
+    });
+  };
+
+  const fetchPostNotTrends = () => {
+    const colRef = query(collection(db, 'posts'), where('hot', '==', false));
+    onSnapshot(colRef, (snapShot) => {
+      const res = [];
+      snapShot.forEach((doc) => {
+        res.push({ id: doc.id, ...doc.data() });
+      });
+      setPostNotTrends(res);
     });
   };
 
   useEffect(() => {
     getPostsLastest();
+    fetchPostNotTrends();
   }, []);
 
   return (
@@ -56,9 +68,10 @@ const HomeNewest = () => {
           {posts.length > 0 &&
             posts.map((post) => <PostNewestLarge key={post.id} post={post} />)}
           <div className='sidebar'>
-            <PostNewest></PostNewest>
-            <PostNewest></PostNewest>
-            <PostNewest></PostNewest>
+            {postNotTrends.length > 0 &&
+              postNotTrends.map((notTrends) => (
+                <PostNewest key={notTrends.id} post={notTrends}></PostNewest>
+              ))}
           </div>
         </section>
       </div>
