@@ -30,7 +30,7 @@ const DashboardLayout = () => {
       <div className='dashboard-main'>
         <Sidebar></Sidebar>
         <div className='dashboard-children'>
-          <Outlet></Outlet>
+          <Outlet />
         </div>
       </div>
     </DashboardStyles>

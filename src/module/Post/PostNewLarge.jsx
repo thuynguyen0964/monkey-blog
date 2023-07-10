@@ -35,7 +35,7 @@ const PostNewestLarge = ({ post }) => {
       >
         {post.category?.name}
       </PostCategory>
-      <PostTitle size='large' className='mb'>
+      <PostTitle slug={post.slug} size='large' className='mb'>
         {post.title}
       </PostTitle>
       <PostMeta

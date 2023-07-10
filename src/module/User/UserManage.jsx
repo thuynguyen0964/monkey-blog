@@ -20,6 +20,7 @@ import { ITEM_PER_PAGE, UserProps, roleUser } from '../../utils/constant';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
 import { Tooltip } from 'react-tooltip';
+import { useAuthCtx } from '../../context/AuthContext';
 
 export const shortValue = (string, index) => {
   if (typeof string !== 'string' || typeof index !== 'number') return;
@@ -127,86 +128,101 @@ const UserManage = () => {
     });
   };
 
+  const { accounts } = useAuthCtx();
+  const isAdmin = accounts?.role !== roleUser.ADMIN;
+
   return (
     <>
-      <div className='flex items-start justify-between gap-3'>
-        <DashboardHeading title='Users' desc='Manage your user' />
-        <input
-          type='text'
-          className='ml-auto input-global'
-          placeholder='Enter email to search...'
-          onChange={handleFilter}
-        />
-        <Button to={`${pathname}/add`}>Add User</Button>
-      </div>
-      <Table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Avatar</th>
-            <th>Status</th>
-            <th>Role</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userList &&
-            userList.length > 0 &&
-            userList.map((user) => (
-              <tr key={user.id}>
-                <td data-tooltip-id='action' data-tooltip-content={user.id}>
-                  {shortValue(user.id, 10)}
-                </td>
-                <td>{user.username}</td>
-                <td data-tooltip-id='action' data-tooltip-content={user.email}>
-                  <span className='italic text-gray-500'>
-                    {shortValue(user.email, 12)}
-                  </span>
-                </td>
-                <td>
-                  <img
-                    src={user?.avatar || defaultImg}
-                    className='object-cover w-8 h-8 rounded-full'
-                    alt={user.name}
-                  />
-                </td>
-                <td>{renderLabelStatus(user.status)}</td>
-                <td>{user?.role}</td>
-                <td>
-                  <div className='flex gap-5 text-gray-400'>
-                    <Update
-                      id='action'
-                      content='Update'
-                      disabled={user?.role === roleUser.ADMIN}
-                      onClick={() =>
-                        handleChangeURL(`${pathname}/change?id=${user.id}`)
-                      }
-                    />
-                    <Remover
-                      id='action'
-                      content='Remove'
-                      disabled={user?.role === roleUser.ADMIN}
-                      onClick={() => handleDeleteUser(user)}
-                    />
-                  </div>
-                </td>
+      {isAdmin ? (
+        <DashboardHeading title="You don't have permisson in here" />
+      ) : (
+        <>
+          <div className='flex items-start justify-between gap-3'>
+            <DashboardHeading title='Users' desc='Manage your user' />
+            <input
+              type='text'
+              className='ml-auto input-global'
+              placeholder='Enter email to search...'
+              onChange={handleFilter}
+            />
+            <Button to={`${pathname}/add`}>Add User</Button>
+          </div>
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Avatar</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Action</th>
               </tr>
-            ))}
-        </tbody>
-      </Table>
+            </thead>
+            <tbody>
+              {userList &&
+                userList.length > 0 &&
+                userList.map((user) => (
+                  <tr key={user.id}>
+                    <td data-tooltip-id='action' data-tooltip-content={user.id}>
+                      {shortValue(user.id, 10)}
+                    </td>
+                    <td>{user.username}</td>
+                    <td
+                      data-tooltip-id='action'
+                      data-tooltip-content={user.email}
+                    >
+                      <span className='italic text-gray-500'>
+                        {shortValue(user.email, 12)}
+                      </span>
+                    </td>
+                    <td>
+                      <img
+                        src={user?.avatar || defaultImg}
+                        className='object-cover w-8 h-8 rounded-full'
+                        alt={user.name}
+                      />
+                    </td>
+                    <td>{renderLabelStatus(user.status)}</td>
+                    <td>{user?.role}</td>
+                    <td>
+                      <div className='flex gap-5 text-gray-400'>
+                        <Update
+                          id='action'
+                          content='Update'
+                          disabled={user?.role === roleUser.ADMIN}
+                          onClick={() =>
+                            handleChangeURL(`${pathname}/change?id=${user.id}`)
+                          }
+                        />
+                        <Remover
+                          id='action'
+                          content='Remove'
+                          disabled={user?.role === roleUser.ADMIN}
+                          onClick={() => handleDeleteUser(user)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
 
-      <div className='mt-8'>
-        <Button
-          disabled={userList.length === totalUser}
-          onClick={handleLoadMore}
-          className='mx-auto'
-        >
-          Load More
-        </Button>
-      </div>
-      <Tooltip id='action' render={({ content }) => <span>{content}</span>} />
+          <div className='mt-8'>
+            <Button
+              disabled={userList.length === totalUser}
+              onClick={handleLoadMore}
+              className='mx-auto'
+            >
+              Load More
+            </Button>
+          </div>
+          <Tooltip
+            id='action'
+            render={({ content }) => <span>{content}</span>}
+          />
+        </>
+      )}
     </>
   );
 };

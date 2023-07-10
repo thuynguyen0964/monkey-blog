@@ -11,7 +11,7 @@ import {
 import ImagesUpload from '../../components/upload/ImagesUpload';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
 import { useForm } from 'react-hook-form';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { UserProps, roleUser } from '../../utils/constant';
 import { useImages } from '../../hooks/useImages';
 import { auth, db } from '../../firebase/config';
@@ -40,11 +40,6 @@ const UserAddNew = () => {
   const handleCreateUsers = async (values) => {
     try {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
-
-      await updateProfile(auth.currentUser, {
-        displayName: values.username,
-        photoURL: imageUpload.imagePath,
-      });
 
       await addDoc(collection(db, 'users'), {
         ...values,

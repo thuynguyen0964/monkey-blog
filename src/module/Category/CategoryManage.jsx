@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Button, Table, LabelStatus, toast } from '../../components/import';
 import { Remover, Update, Views } from '../../components/action';
 import DashboardHeading from '../DashBoard/DashBoardHeading';
@@ -17,8 +17,9 @@ import {
 import { db } from '../../firebase/config';
 import swal from 'sweetalert';
 import { debounce } from 'lodash';
-import { ITEM_PER_PAGE } from '../../utils/constant';
+import { ITEM_PER_PAGE, roleUser } from '../../utils/constant';
 import { Tooltip } from 'react-tooltip';
+import { useAuthCtx } from '../../context/AuthContext';
 
 const CategoryManage = () => {
   const { pathname } = useLocation();
@@ -110,73 +111,93 @@ const CategoryManage = () => {
     getCategoriesInDB();
   }, [filterValue]);
 
+  const { accounts } = useAuthCtx();
+  const isAdmin = accounts?.role === roleUser.ADMIN;
+
   return (
     <>
-      <div className='flex items-start justify-between gap-3'>
-        <DashboardHeading title='Categories' desc='Manage your category' />
-        <input
-          type='text'
-          className='ml-auto input-global'
-          onChange={handleFilter}
-          placeholder='Enter to search...'
-        />
-        <Button to={`${pathname}/add`}>New Category</Button>
-      </div>
+      {isAdmin ? (
+        <Fragment>
+          <div className='flex items-start justify-between gap-3'>
+            <DashboardHeading title='Categories' desc='Manage your category' />
+            <input
+              type='text'
+              className='ml-auto input-global'
+              onChange={handleFilter}
+              placeholder='Enter to search...'
+            />
+            <Button to={`${pathname}/add`}>New Category</Button>
+          </div>
 
-      <Table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categoryList.length > 0 &&
-            categoryList.map((category) => (
-              <tr key={category.id}>
-                <td>{category.id}</td>
-                <td>{category.name}</td>
-                <td>
-                  <span className='italic text-gray-500'>{category.slug}</span>
-                </td>
-                <td>
-                  <LabelStatus type='success'>{category.status}</LabelStatus>
-                </td>
-                <td>
-                  <div className='flex gap-5 text-gray-400'>
-                    <Views id='action' content='Details' />
-                    <Update
-                      id='action'
-                      content='Update'
-                      onClick={() =>
-                        handleChangePages('change', category.id, category.name)
-                      }
-                    />
-                    <Remover
-                      id='action'
-                      content='Remove'
-                      onClick={() => handleDelCategories(category.id)}
-                    />
-                  </div>
-                </td>
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            ))}
-        </tbody>
-      </Table>
+            </thead>
+            <tbody>
+              {categoryList.length > 0 &&
+                categoryList.map((category) => (
+                  <tr key={category.id}>
+                    <td>{category.id}</td>
+                    <td>{category.name}</td>
+                    <td>
+                      <span className='italic text-gray-500'>
+                        {category.slug}
+                      </span>
+                    </td>
+                    <td>
+                      <LabelStatus type='success'>
+                        {category.status}
+                      </LabelStatus>
+                    </td>
+                    <td>
+                      <div className='flex gap-5 text-gray-400'>
+                        <Views id='action' content='Details' />
+                        <Update
+                          id='action'
+                          content='Update'
+                          onClick={() =>
+                            handleChangePages(
+                              'change',
+                              category.id,
+                              category.name
+                            )
+                          }
+                        />
+                        <Remover
+                          id='action'
+                          content='Remove'
+                          onClick={() => handleDelCategories(category.id)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
 
-      <div className='mt-8'>
-        <Button
-          disabled={categoryList.length === total}
-          onClick={handleLoadMore}
-          className='mx-auto'
-        >
-          Load More
-        </Button>
-      </div>
-      <Tooltip id='action' render={({ content }) => <span>{content}</span>} />
+          <div className='mt-8'>
+            <Button
+              disabled={categoryList.length === total}
+              onClick={handleLoadMore}
+              className='mx-auto'
+            >
+              Load More
+            </Button>
+          </div>
+          <Tooltip
+            id='action'
+            render={({ content }) => <span>{content}</span>}
+          />
+        </Fragment>
+      ) : (
+        <DashboardHeading title="You don't have permisson in here" />
+      )}
     </>
   );
 };

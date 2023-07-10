@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 const AuthContext = createContext();
 
 const AuthProvider = (props) => {
@@ -10,9 +11,17 @@ const AuthProvider = (props) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setAccounts(user);
-      }else{
-        setAccounts({})
+        const colRef = query(
+          collection(db, 'users'),
+          where('email', '==', user.email)
+        );
+        onSnapshot(colRef, (snapShot) => {
+          snapShot.forEach((doc) => {
+            setAccounts({ ...user, ...doc.data() });
+          });
+        });
+      } else {
+        setAccounts({});
       }
     });
   }, []);
