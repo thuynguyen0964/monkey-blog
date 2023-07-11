@@ -103,6 +103,7 @@ const PostUpdate = () => {
   const updatePost = async (values) => {
     await updateDoc(colRef, {
       ...values,
+      imageStore: imageUpload.imagePath,
       content,
     });
     toast.success('Change post successfully!!');
